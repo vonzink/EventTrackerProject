@@ -2,6 +2,7 @@ package com.skilldistillery.loantracker.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.AfterAll;
@@ -14,7 +15,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-class UserTest {
+class UnderwritingTest {
 
 	private static EntityManagerFactory emf;
 	private EntityManager em;
@@ -40,15 +41,16 @@ class UserTest {
 	}
 
 	@Test
-    void test_find_user_by_id() {
-        User user = em.find(User.class, 1); 
-		assertNotNull(user);
-		assertEquals("Zachary", user.getFirstName());
-		assertEquals("Zink", user.getLastName());
-		assertEquals("vonzink", user.getUsername());
-		assertEquals("LO", user.getRole());
-		assertEquals("1234", user.getPassword()); 
-		assertEquals("vonzink@gmail.com", user.getEmail());
-		assertTrue(user.getCreatedAt() instanceof LocalDateTime);
-		}
+    void test_underwriting_entity_mapping() {
+        Underwriting uw = em.find(Underwriting.class, 1);
+        assertNotNull(uw);
+        assertEquals(1, uw.getApplicationId());
+        assertEquals("John Smith", uw.getUnderwriterName());
+        assertNotNull(uw.getFindings());
+        assertNotNull(uw.getReviewedDate());
+        assertTrue(uw.getReviewedDate().isBefore(LocalDate.now().plusDays(1)));
+        assertEquals("APPROVED", uw.getDecision());
+        assertNotNull(uw.getUser());
+        assertEquals("Zachary", uw.getUser().getFirstName());
+    }
     }

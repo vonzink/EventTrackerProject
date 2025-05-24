@@ -14,7 +14,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-class UserTest {
+class DocumentationTest {
 
 	private static EntityManagerFactory emf;
 	private EntityManager em;
@@ -39,16 +39,11 @@ class UserTest {
 		em.close();
 	}
 
-	@Test
-    void test_find_user_by_id() {
-        User user = em.find(User.class, 1); 
-		assertNotNull(user);
-		assertEquals("Zachary", user.getFirstName());
-		assertEquals("Zink", user.getLastName());
-		assertEquals("vonzink", user.getUsername());
-		assertEquals("LO", user.getRole());
-		assertEquals("1234", user.getPassword()); 
-		assertEquals("vonzink@gmail.com", user.getEmail());
-		assertTrue(user.getCreatedAt() instanceof LocalDateTime);
-		}
+	 @Test
+	    void test_entity_fields() {
+	        Documentation doc = em.find(Documentation.class, 1);
+	        assertNotNull(doc);
+	        assertEquals("W2", doc.getDocType());
+	        assertTrue(doc.getFilePath().endsWith(".pdf"));
+	    }
     }

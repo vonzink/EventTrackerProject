@@ -5,6 +5,15 @@
 	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 	<class>com.skilldistillery.loantracker.entities.User</class>
+	<class>com.skilldistillery.loantracker.entities.Underwriting</class>
+	<class>com.skilldistillery.loantracker.entities.Status</class>
+	<class>com.skilldistillery.loantracker.entities.Funded</class>
+	<class>com.skilldistillery.loantracker.entities.Documentation</class>
+	<class>com.skilldistillery.loantracker.entities.Declined</class>
+	<class>com.skilldistillery.loantracker.entities.Closed</class>
+	<class>com.skilldistillery.loantracker.entities.ClearToClose</class>
+	<class>com.skilldistillery.loantracker.entities.Approved</class>
+	<class>com.skilldistillery.loantracker.entities.Application</class>
 
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/loantrackerdb" />
@@ -23,10 +32,7 @@
       <property name="hibernate.c3p0.max_statements" value="0" />
       <property name="hibernate.c3p0.timeout" value="60" />
     </properties>
-	
-	
-	
-	
+
 	
 	</persistence-unit>
 </persistence>
