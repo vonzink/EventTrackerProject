@@ -10,10 +10,11 @@ import com.skilldistillery.loantracker.entities.Application;
 
 public interface ApplicationRepository extends JpaRepository<Application, Integer> {
 
-	 	List<Application> findByBorrowerNameContainingIgnoreCase(String name);
+		List<Application> findByBorrowerLastNameContainingIgnoreCase(String name);
+		List<Application> findByBorrowerFirstNameContainingIgnoreCase(String name);
 	    List<Application> findByPropertyAddressContainingIgnoreCase(String address);
 	    List<Application> findByStatus(String status);
-	    List<Application> findBySubmissionDateBetween(LocalDate start, LocalDate end);
+	    List<Application> findBySubmittedDateBetween(LocalDate start, LocalDate end);
 	  
 	    
 }

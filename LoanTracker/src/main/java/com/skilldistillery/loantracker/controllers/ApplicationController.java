@@ -66,7 +66,7 @@ public class ApplicationController {
 	// 🔍 Search endpoints
 	@GetMapping("applications/search/name")
 	public List<Application> findByName(@RequestParam("name") String name) {
-		return appService.findByBorrowerName(name);
+		return appService.findByBorrowerLastName(name);
 	}
 
 	@GetMapping("applications/search/address")
@@ -82,6 +82,6 @@ public class ApplicationController {
 	public List<Application> findByDateRange(
 			@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
 			@RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
-		return appService.findBySubmissionDateRange(start, end);
+		return appService.findBySubmittedDateRange(start, end);
 	}
 }

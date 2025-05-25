@@ -37,16 +37,19 @@ public class ApplicationServiceImpl implements ApplicationService {
 	        }
 	        return false;
 	    }
-	    public List<Application> findByBorrowerName(String name) {
-	        return appRepo.findByBorrowerNameContainingIgnoreCase(name);
-	    }
 	    public List<Application> findByPropertyAddress(String address) {
 	        return appRepo.findByPropertyAddressContainingIgnoreCase(address);
 	    }
 	    public List<Application> findByStatus(String status) {
 	        return appRepo.findByStatus(status);
 	    }
-		public List<Application> findBySubmissionDateRange(LocalDate start, LocalDate end) {
-			 return appRepo.findBySubmissionDateBetween(start, end);
+		public List<Application> findBySubmittedDateRange(LocalDate start, LocalDate end) {
+			 return appRepo.findBySubmittedDateBetween(start, end);
+		}
+		public List<Application> findByBorrowerName(String name) {
+			return appRepo.findByBorrowerFirstNameContainingIgnoreCase(name);
+		}
+		public List<Application> findByBorrowerLastName(String name) {
+			 return appRepo.findByBorrowerLastNameContainingIgnoreCase(name); 
 		}
 }

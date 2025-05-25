@@ -17,6 +17,7 @@ public interface ApplicationService {
     List<Application> findByBorrowerName(String name);
     List<Application> findByPropertyAddress(String address);
     List<Application> findByStatus(String status);
-    List<Application> findBySubmissionDateRange(LocalDate start, LocalDate end);
+    List<Application> findBySubmittedDateRange(LocalDate start, LocalDate end);
+	List<Application> findByBorrowerLastName(String name);
 }
 
