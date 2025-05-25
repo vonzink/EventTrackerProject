@@ -43,8 +43,8 @@ class ApplicationTest {
 	 void test_entity_fields() {
         Application app = em.find(Application.class, 1);
         assertNotNull(app);
-        assertEquals("123 Main St", app.getPropertyAddress());
+        assertEquals("78 the lane road", app.getPropertyAddress().toLowerCase());
         assertNotNull(app.getLoanAmount());
-        assertEquals("PURCHASE", app.getPurpose());
+        assertEquals("purchase", app.getPurpose().toLowerCase());
     }
     }

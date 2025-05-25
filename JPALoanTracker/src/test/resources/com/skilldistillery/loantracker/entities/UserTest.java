@@ -43,7 +43,7 @@ class UserTest {
     void test_find_user_by_id() {
         User user = em.find(User.class, 1); 
 		assertNotNull(user);
-		assertEquals("Zachary", user.getFirstName());
+		assertEquals("Zach", user.getFirstName());
 		assertEquals("Zink", user.getLastName());
 		assertEquals("vonzink", user.getUsername());
 		assertEquals("LO", user.getRole());

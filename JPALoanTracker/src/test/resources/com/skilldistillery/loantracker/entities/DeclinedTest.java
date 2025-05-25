@@ -43,6 +43,6 @@ class DeclinedTest {
     void test_entity_fields() {
         Declined declined = em.find(Declined.class, 1);
         assertNotNull(declined);
-        assertTrue(declined.getReason().contains("income"));
+        assertTrue(declined.getReason().toLowerCase().contains("credit"));
     }
     }

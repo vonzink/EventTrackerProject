@@ -13,24 +13,20 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="underwriting")
+@Table(name = "underwriting")
 public class Underwriting {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id; 
-	@Column(name="application_id")
-	private int applicationId; 
-	@Column(name="underwriter_name")
-	private String underwriterName; 
-	private String findings; 
-	@Column(name="reviewed_date")
-	private LocalDate reviewedDate; 
-	private String decision; 
-	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User user;
+	private int id;
+	@Column(name = "application_id")
+	private int applicationId;
+	@Column(name = "underwriter_name")
+	private String underwriterName;
+	private String findings;
+	@Column(name = "reviewed_date")
+	private LocalDate reviewedDate;
+	private String decision;
 
 	public Underwriting() {
 		super();
@@ -45,7 +41,7 @@ public class Underwriting {
 		this.findings = findings;
 		this.reviewedDate = reviewedDate;
 		this.decision = decision;
-		this.user = user;
+
 	}
 
 	public int getId() {
@@ -96,17 +92,9 @@ public class Underwriting {
 		this.decision = decision;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(applicationId, decision, findings, id, reviewedDate, underwriterName, user);
+		return Objects.hash(applicationId, decision, findings, id, reviewedDate, underwriterName);
 	}
 
 	@Override
@@ -121,16 +109,14 @@ public class Underwriting {
 		return applicationId == other.applicationId && Objects.equals(decision, other.decision)
 				&& Objects.equals(findings, other.findings) && id == other.id
 				&& Objects.equals(reviewedDate, other.reviewedDate)
-				&& Objects.equals(underwriterName, other.underwriterName) && Objects.equals(user, other.user);
+				&& Objects.equals(underwriterName, other.underwriterName);
 	}
 
 	@Override
 	public String toString() {
 		return "Underwriting [id=" + id + ", applicationId=" + applicationId + ", underwriterName=" + underwriterName
 				+ ", findings=" + findings + ", reviewedDate=" + reviewedDate + ", decision=" + decision + ", user="
-				+ user + "]";
-	} 
-	
-	
-	
+				+ "]";
+	}
+
 }

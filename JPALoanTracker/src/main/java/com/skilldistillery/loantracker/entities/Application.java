@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,6 +32,10 @@ public class Application {
 	private LocalDate submittedDate;
 	private String status;
 
+	@ManyToOne
+	@JoinColumn(name = "borrower_id")
+	private Borrower borrower;
+	
 	// Constructors
 	public Application() {
 		super();
@@ -111,6 +117,14 @@ public class Application {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Borrower getBorrower() {
+		return borrower;
+	}
+
+	public void setBorrower(Borrower borrower) {
+		this.borrower = borrower;
 	}
 
 	// Hashcode and Equals

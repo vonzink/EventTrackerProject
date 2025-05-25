@@ -14,6 +14,7 @@
 	<class>com.skilldistillery.loantracker.entities.ClearToClose</class>
 	<class>com.skilldistillery.loantracker.entities.Approved</class>
 	<class>com.skilldistillery.loantracker.entities.Application</class>
+	<class>com.skilldistillery.loantracker.entities.Borrower</class>
 
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/loantrackerdb" />

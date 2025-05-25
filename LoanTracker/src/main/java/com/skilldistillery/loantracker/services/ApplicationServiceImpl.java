@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.skilldistillery.loantracker.entities.Application;
 import com.skilldistillery.loantracker.repositories.ApplicationRepository;
-import com.skilldistillery.loantracker.repositories.UserRepository;
+
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {

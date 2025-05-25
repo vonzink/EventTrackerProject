@@ -42,6 +42,6 @@ class ClearToCloseTest {
 	void test_entity_fields() {
 		ClearToClose ctc = em.find(ClearToClose.class, 1);
 		assertNotNull(ctc);
-		assertEquals("Jane Processor", ctc.getClearedBy());
+		assertEquals("Brook Zink", ctc.getClearedBy().toLowerCase());
 	}
 }

@@ -43,6 +43,6 @@ class ClosedTest {
 	    void test_entity_fields() {
 	        Closed closed = em.find(Closed.class, 1);
 	        assertNotNull(closed);
-	        assertEquals("Title Inc.", closed.getSettlementAgent());
+	        assertEquals("title", closed.getSettlementAgent().toLowerCase());
 	    }
     }

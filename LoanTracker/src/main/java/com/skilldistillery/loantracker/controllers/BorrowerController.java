@@ -12,66 +12,66 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.skilldistillery.loantracker.entities.User;
-import com.skilldistillery.loantracker.services.UserService;
+import com.skilldistillery.loantracker.entities.Borrower;
+import com.skilldistillery.loantracker.services.BorrowerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("api/users")
-public class UserController {
+@RequestMapping("/api/borrowers")
+public class BorrowerController {
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+    private BorrowerService borrowerService;
 
     @GetMapping
-    public List<User> index(HttpServletResponse res) {
-        List<User> users = userService.findAll();
-        if (users == null || users.isEmpty()) {
+    public List<Borrower> index(HttpServletResponse res) {
+        List<Borrower> borrowers = borrowerService.findAll();
+        if (borrowers == null || borrowers.isEmpty()) {
             res.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204
         }
-        return users;
+        return borrowers;
     }
 
     @GetMapping("{id}")
-    public User show(@PathVariable int id, HttpServletResponse res) {
-        User user = userService.findById(id);
-        if (user == null) {
+    public Borrower show(@PathVariable int id, HttpServletResponse res) {
+        Borrower borrower = borrowerService.findById(id);
+        if (borrower == null) {
             res.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404
         }
-        return user;
+        return borrower;
     }
 
     @PostMapping
-    public User create(@RequestBody User user, HttpServletResponse res) {
+    public Borrower create(@RequestBody Borrower borrower, HttpServletResponse res) {
         try {
-            user = userService.create(user);
+            borrower = borrowerService.create(borrower);
             res.setStatus(HttpServletResponse.SC_CREATED); // 201
         } catch (Exception e) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
-            user = null;
+            borrower = null;
         }
-        return user;
+        return borrower;
     }
 
     @PutMapping("{id}")
-    public User update(@PathVariable int id, @RequestBody User user, HttpServletResponse res) {
+    public Borrower update(@PathVariable int id, @RequestBody Borrower borrower, HttpServletResponse res) {
         try {
-            user = userService.update(id, user);
-            if (user == null) {
+            borrower = borrowerService.update(id, borrower);
+            if (borrower == null) {
                 res.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404
             }
         } catch (Exception e) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
-            user = null;
+            borrower = null;
         }
-        return user;
+        return borrower;
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable int id, HttpServletResponse res) {
         try {
-            boolean deleted = userService.delete(id);
+            boolean deleted = borrowerService.delete(id);
             if (deleted) {
                 res.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204
             } else {

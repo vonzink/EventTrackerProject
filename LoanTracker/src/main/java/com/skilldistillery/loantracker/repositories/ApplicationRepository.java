@@ -14,5 +14,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 	    List<Application> findByPropertyAddressContainingIgnoreCase(String address);
 	    List<Application> findByStatus(String status);
 	    List<Application> findBySubmissionDateBetween(LocalDate start, LocalDate end);
+	  
 	    
 }

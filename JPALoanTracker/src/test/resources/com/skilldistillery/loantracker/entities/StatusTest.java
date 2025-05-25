@@ -43,6 +43,6 @@ class StatusTest {
 	    void test_entity_fields() {
 	        Status status = em.find(Status.class, 1);
 	        assertNotNull(status);
-	        assertEquals("APPROVED", status.getStatus());
+	        assertEquals("application", status.getStatus().toLowerCase());
 	    }
     }

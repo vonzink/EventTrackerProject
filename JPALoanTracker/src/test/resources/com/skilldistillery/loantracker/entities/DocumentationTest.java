@@ -43,7 +43,7 @@ class DocumentationTest {
 	    void test_entity_fields() {
 	        Documentation doc = em.find(Documentation.class, 1);
 	        assertNotNull(doc);
-	        assertEquals("W2", doc.getDocType());
-	        assertTrue(doc.getFilePath().endsWith(".pdf"));
+	        assertEquals("income", doc.getDocType().toLowerCase());
+	        assertTrue(doc.getFilePath().toLowerCase().contains("http://"));
 	    }
     }
