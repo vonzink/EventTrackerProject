@@ -1,4 +1,4 @@
-package com.skilldistillery.loantracker.repositories;
+package com.skilldistillery.loantracker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

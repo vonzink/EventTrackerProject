@@ -11,7 +11,6 @@ public interface DeclinedRepository extends JpaRepository<Declined, Integer> {
 
 	
 	  List<Declined> findByApplicationId(int appId);
-	  List<Declined> findByDeclinedByContainingIgnoreCase(String declinedBy);
-	  List<Declined> findByReasonContainingIgnoreCase(String reason);
+
 	  
 }

@@ -9,7 +9,5 @@ import com.skilldistillery.loantracker.entities.Closed;
 public interface ClosedRepository extends JpaRepository<Closed, Integer> {
 
 	  List<Closed> findByApplicationId(int appId);
-	  List<Closed> findByClosedByContainingIgnoreCase(String closedBy);
-	  List<Closed> findByNotesContainingIgnoreCase(String notes);
-	  
+
 }

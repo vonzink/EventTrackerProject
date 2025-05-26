@@ -9,7 +9,6 @@ import com.skilldistillery.loantracker.entities.Funded;
 public interface FundedRepository extends JpaRepository<Funded, Integer> {
 
 		List<Funded> findByApplicationId(int appId);
-		List<Funded> findByConfirmedByContainingIgnoreCase(String confirmedBy);
-		List<Funded> findByNotesContainingIgnoreCase(String notes);
+
 	  
 }

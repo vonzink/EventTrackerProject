@@ -27,7 +27,6 @@ public class StatusServiceImpl implements StatusService {
 	private UserRepository userRepo; 
 	
 	
-	
 	@Override
 	public Status addStatus(int appId, String StatusName, String notes, int userId) {
 		Application app = appRepo.findById(appId).orElseThrow(); 
@@ -53,5 +52,4 @@ public class StatusServiceImpl implements StatusService {
 		return statusRepo.save(status);
 		
 	}
-
 }
