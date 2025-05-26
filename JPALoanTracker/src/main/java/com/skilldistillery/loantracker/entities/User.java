@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,14 +31,15 @@ public class User {
 	private String email;
 	private String role;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "changedBy")
 	private List<Status> statuses;
 
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
-	@JsonManagedReference
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Application> applications;
 
 	public User() {
@@ -144,6 +144,14 @@ public class User {
 		return Objects.hash(applications, createdAt, email, firstName, id, lastName, password, role, username);
 	}
 
+	public List<Status> getStatuses() {
+	    return statuses;
+	}
+
+	public void setStatuses(List<Status> statuses) {
+	    this.statuses = statuses;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -162,7 +170,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", password=" + password + ", email=" + email + ", role=" + role + ", createdAt=" + createdAt
+				+ ", email=" + email + ", role=" + role + ", createdAt=" + createdAt
 				+ ", applications=" + applications + "]";
 	}
 

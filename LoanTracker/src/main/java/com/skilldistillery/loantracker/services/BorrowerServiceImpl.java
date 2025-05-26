@@ -16,50 +16,54 @@ import jakarta.transaction.Transactional;
 public class BorrowerServiceImpl implements BorrowerService {
 
 
-	    @Autowired
-	    private BorrowerRepository borrowerRepo;
+	@Autowired
+    private BorrowerRepository borrowerRepo;
 
-	    @Override
-	    public List<Borrower> findAll() {
-	        return borrowerRepo.findAll();
-	    }
+    @Override
+    public List<Borrower> findAll() {
+        return borrowerRepo.findAll();
+    }
 
-	    @Override
-	    @Transactional
-	    public Borrower findById(int id) {
-	        return borrowerRepo.findById(id).orElse(null);
-	    }
+    @Override
+    public Borrower findById(int id) {
+        Optional<Borrower> borrowerOpt = borrowerRepo.findById(id);
+        return borrowerOpt.orElse(null);
+    }
 
-	    @Override
-	    public Borrower create(Borrower borrower) {
-	        return borrowerRepo.save(borrower);
-	    }
+    @Override
+    public Borrower create(Borrower borrower) {
+        return borrowerRepo.save(borrower);
+    }
 
-	    @Override
-	    public Borrower update(int id, Borrower borrower) {
-	        Optional<Borrower> existingOpt = borrowerRepo.findById(id);
-	        if (existingOpt.isPresent()) {
-	            Borrower existing = existingOpt.get();
-	            existing.setFirstName(borrower.getFirstName());
-	            existing.setLastName(borrower.getLastName());
-	            existing.setEmail(borrower.getEmail());
-	            existing.setPhone(borrower.getPhone());
-	            return borrowerRepo.save(existing);
-	        }
-	        return null;
-	    }
+    @Override
+    public Borrower update(int id, Borrower borrower) {
+        Borrower existing = findById(id);
+        if (existing == null) return null;
 
-	    @Override
-	    public boolean delete(int id) {
-	        if (borrowerRepo.existsById(id)) {
-	            borrowerRepo.deleteById(id);
-	            return true;
-	        }
-	        return false;
-	    }
+        existing.setFirstName(borrower.getFirstName());
+        existing.setLastName(borrower.getLastName());
+        existing.setEmail(borrower.getEmail());
+        existing.setPhone(borrower.getPhone());
 
-	    @Override
-	    public List<Borrower> findByLastName(String lastName) {
-	        return borrowerRepo.findByLastNameContainingIgnoreCase(lastName);
-	    }
+        return borrowerRepo.save(existing);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        if (borrowerRepo.existsById(id)) {
+            borrowerRepo.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Borrower> findByFirstNameContains(String name) {
+        return borrowerRepo.findByFirstNameContainingIgnoreCase(name);
+    }
+
+    @Override
+    public List<Borrower> findByPhoneContains(String phone) {
+        return borrowerRepo.findByPhoneContaining(phone);
+    }
 }

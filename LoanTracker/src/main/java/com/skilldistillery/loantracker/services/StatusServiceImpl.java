@@ -13,7 +13,10 @@ import com.skilldistillery.loantracker.repositories.ApplicationRepository;
 import com.skilldistillery.loantracker.repositories.StatusRepository;
 import com.skilldistillery.loantracker.repositories.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class StatusServiceImpl implements StatusService {
 
 	@Autowired
@@ -42,7 +45,7 @@ public class StatusServiceImpl implements StatusService {
 
 	@Override
 	public List<Status> getStatusHistory(int appId) {
-		return statusRepo.findByApplicationIdOrderByChangedAtDesc(appId); 
+	    return statusRepo.findByApplicationId(appId);
 	}
 
 	@Override

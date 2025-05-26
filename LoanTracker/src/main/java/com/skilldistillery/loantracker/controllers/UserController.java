@@ -1,6 +1,7 @@
 package com.skilldistillery.loantracker.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,8 +35,8 @@ public class UserController {
     }
 
     @GetMapping("users/{id}")
-    public User show(@PathVariable("id") int id, HttpServletResponse res) {
-        User user = userService.findById(id);
+    public Optional<User> show(@PathVariable("id") int id, HttpServletResponse res) {
+        Optional<User> user = userService.findById(id);
         if (user == null) {
             res.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404
         }

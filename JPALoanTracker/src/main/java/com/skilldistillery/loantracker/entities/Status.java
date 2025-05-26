@@ -3,6 +3,7 @@ package com.skilldistillery.loantracker.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -32,12 +33,13 @@ public class Status {
 	private String notes;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "changed_by")
 	private User changedBy;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "application_id")
+	@JsonIgnore
 	private Application application;
 
 	public Status() {

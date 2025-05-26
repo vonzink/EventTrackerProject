@@ -57,11 +57,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `applications`
+-- Table `application`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `applications` ;
+DROP TABLE IF EXISTS `application` ;
 
-CREATE TABLE IF NOT EXISTS `applications` (
+CREATE TABLE IF NOT EXISTS `application` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NULL DEFAULT NULL,
   `property_address` VARCHAR(255) NULL DEFAULT NULL,
@@ -100,12 +100,12 @@ CREATE TABLE IF NOT EXISTS `approved` (
   `approval_notes` TEXT NULL DEFAULT NULL,
   `interest_rate` DECIMAL(5,3) NULL DEFAULT NULL,
   `term_years` INT NULL DEFAULT NULL,
-  `applications_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_approved_applications1_idx` (`applications_id` ASC) VISIBLE,
-  CONSTRAINT `fk_approved_applications1`
-    FOREIGN KEY (`applications_id`)
-    REFERENCES `applications` (`id`)
+  `application_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `application_id`),
+  INDEX `fk_approved_application1_idx` (`application_id` ASC) VISIBLE,
+  CONSTRAINT `fk_approved_application1`
+    FOREIGN KEY (`application_id`)
+    REFERENCES `application` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -124,12 +124,12 @@ CREATE TABLE IF NOT EXISTS `closed` (
   `closing_date` DATE NULL DEFAULT NULL,
   `settlement_agent` VARCHAR(100) NULL DEFAULT NULL,
   `notes` TEXT NULL DEFAULT NULL,
-  `applications_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_closed_applications1_idx` (`applications_id` ASC) VISIBLE,
-  CONSTRAINT `fk_closed_applications1`
-    FOREIGN KEY (`applications_id`)
-    REFERENCES `applications` (`id`)
+  `application_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `application_id`),
+  INDEX `fk_closed_application1_idx` (`application_id` ASC) VISIBLE,
+  CONSTRAINT `fk_closed_application1`
+    FOREIGN KEY (`application_id`)
+    REFERENCES `application` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -148,12 +148,12 @@ CREATE TABLE IF NOT EXISTS `ctc` (
   `cleared_by` VARCHAR(100) NULL DEFAULT NULL,
   `ctc_date` DATE NULL DEFAULT NULL,
   `notes` TEXT NULL DEFAULT NULL,
-  `applications_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_ctc_applications1_idx` (`applications_id` ASC) VISIBLE,
-  CONSTRAINT `fk_ctc_applications1`
-    FOREIGN KEY (`applications_id`)
-    REFERENCES `applications` (`id`)
+  `application_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `application_id`),
+  INDEX `fk_ctc_application1_idx` (`application_id` ASC) VISIBLE,
+  CONSTRAINT `fk_ctc_application1`
+    FOREIGN KEY (`application_id`)
+    REFERENCES `application` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -171,12 +171,12 @@ CREATE TABLE IF NOT EXISTS `declined` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `declined_date` DATE NULL DEFAULT NULL,
   `reason` TEXT NULL DEFAULT NULL,
-  `applications_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_declined_applications1_idx` (`applications_id` ASC) VISIBLE,
-  CONSTRAINT `fk_declined_applications1`
-    FOREIGN KEY (`applications_id`)
-    REFERENCES `applications` (`id`)
+  `application_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `application_id`),
+  INDEX `fk_declined_application1_idx` (`application_id` ASC) VISIBLE,
+  CONSTRAINT `fk_declined_application1`
+    FOREIGN KEY (`application_id`)
+    REFERENCES `application` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `documentation` (
   INDEX `uploaded_by` (`uploaded_by` ASC) VISIBLE,
   CONSTRAINT `documentation_ibfk_1`
     FOREIGN KEY (`application_id`)
-    REFERENCES `applications` (`id`),
+    REFERENCES `application` (`id`),
   CONSTRAINT `documentation_ibfk_2`
     FOREIGN KEY (`uploaded_by`)
     REFERENCES `user` (`id`))
@@ -222,12 +222,12 @@ CREATE TABLE IF NOT EXISTS `funded` (
   `funded_date` DATE NULL DEFAULT NULL,
   `wire_amount` DECIMAL(12,2) NULL DEFAULT NULL,
   `wire_confirmation` VARCHAR(100) NULL DEFAULT NULL,
-  `applications_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_funded_applications1_idx` (`applications_id` ASC) VISIBLE,
-  CONSTRAINT `fk_funded_applications1`
-    FOREIGN KEY (`applications_id`)
-    REFERENCES `applications` (`id`)
+  `application_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `application_id`),
+  INDEX `fk_funded_application1_idx` (`application_id` ASC) VISIBLE,
+  CONSTRAINT `fk_funded_application1`
+    FOREIGN KEY (`application_id`)
+    REFERENCES `application` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   INDEX `changed_by` (`changed_by` ASC) VISIBLE,
   CONSTRAINT `loan_statuses_ibfk_1`
     FOREIGN KEY (`application_id`)
-    REFERENCES `applications` (`id`),
+    REFERENCES `application` (`id`),
   CONSTRAINT `loan_statuses_ibfk_2`
     FOREIGN KEY (`changed_by`)
     REFERENCES `user` (`id`))
@@ -274,12 +274,12 @@ CREATE TABLE IF NOT EXISTS `underwriting` (
   `findings` TEXT NULL DEFAULT NULL,
   `reviewed_date` DATE NULL DEFAULT NULL,
   `decision` VARCHAR(50) NULL DEFAULT NULL,
-  `applications_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_underwriting_applications1_idx` (`applications_id` ASC) VISIBLE,
-  CONSTRAINT `fk_underwriting_applications1`
-    FOREIGN KEY (`applications_id`)
-    REFERENCES `applications` (`id`)
+  `application_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `application_id`),
+  INDEX `fk_underwriting_application1_idx` (`application_id` ASC) VISIBLE,
+  CONSTRAINT `fk_underwriting_application1`
+    FOREIGN KEY (`application_id`)
+    REFERENCES `application` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -318,11 +318,11 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `applications`
+-- Data for table `application`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `applications` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`) VALUES (1, 1, '78 The Lane Road', 500000, 'FHA', 'Purchase', '2024-05-12', 'Application', 1, 1000);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`) VALUES (1, 1, '78 The Lane Road', 500000, 'FHA', 'Purchase', '2024-05-12', 'Application', 1, 1000);
 
 COMMIT;
 
@@ -332,7 +332,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `approved` (`id`, `approval_date`, `approval_notes`, `interest_rate`, `term_years`, `applications_id`) VALUES (1, '2025-02-02', 'test', 6, 30, DEFAULT);
+INSERT INTO `approved` (`id`, `approval_date`, `approval_notes`, `interest_rate`, `term_years`, `application_id`) VALUES (1, '2025-02-02', 'test', 6, 30, 1);
 
 COMMIT;
 
@@ -342,7 +342,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `closed` (`id`, `closing_date`, `settlement_agent`, `notes`, `applications_id`) VALUES (1, '2025-03-03', 'title', 'test', DEFAULT);
+INSERT INTO `closed` (`id`, `closing_date`, `settlement_agent`, `notes`, `application_id`) VALUES (1, '2025-03-03', 'title', 'test', 1);
 
 COMMIT;
 
@@ -352,7 +352,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `ctc` (`id`, `cleared_by`, `ctc_date`, `notes`, `applications_id`) VALUES (1, '1', '2025-05-05', 'test', DEFAULT);
+INSERT INTO `ctc` (`id`, `cleared_by`, `ctc_date`, `notes`, `application_id`) VALUES (1, '1', '2025-05-05', 'test', 1);
 
 COMMIT;
 
@@ -362,7 +362,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `declined` (`id`, `declined_date`, `reason`, `applications_id`) VALUES (1, '2025-05-05', 'Credit', DEFAULT);
+INSERT INTO `declined` (`id`, `declined_date`, `reason`, `application_id`) VALUES (1, '2025-05-05', 'Credit', 1);
 
 COMMIT;
 
@@ -382,7 +382,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `funded` (`id`, `funded_date`, `wire_amount`, `wire_confirmation`, `applications_id`) VALUES (1, '2025-01-05', 250000, '10000', DEFAULT);
+INSERT INTO `funded` (`id`, `funded_date`, `wire_amount`, `wire_confirmation`, `application_id`) VALUES (1, '2025-01-05', 250000, '10000', 1);
 
 COMMIT;
 
@@ -402,7 +402,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `underwriting` (`id`, `underwriter_name`, `findings`, `reviewed_date`, `decision`, `applications_id`) VALUES (1, 'seth', 'Approved Eligible', '2025-02-02', 'Approved', DEFAULT);
+INSERT INTO `underwriting` (`id`, `underwriter_name`, `findings`, `reviewed_date`, `decision`, `application_id`) VALUES (1, 'seth', 'Approved Eligible', '2025-02-02', 'Approved', 1);
 
 COMMIT;
 

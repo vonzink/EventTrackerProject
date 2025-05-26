@@ -44,7 +44,7 @@ class UnderwritingTest {
 	void test_underwriting_entity_mapping() {
 		Underwriting uw = em.find(Underwriting.class, 1);
 		assertNotNull(uw);
-		assertEquals(1, uw.getApplicationId());
+		assertEquals(1, uw.getApplication().getId());
 		assertEquals("seth", uw.getUnderwriterName());
 		assertNotNull(uw.getFindings());
 		assertNotNull(uw.getReviewedDate());

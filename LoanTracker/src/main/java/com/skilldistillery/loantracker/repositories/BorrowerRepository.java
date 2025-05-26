@@ -11,8 +11,10 @@ import com.skilldistillery.loantracker.entities.Borrower;
 
 public interface BorrowerRepository extends JpaRepository<Borrower, Integer> {
 
-	
-	    List<Borrower> findByLastNameContainingIgnoreCase(String lastName);
+	  List<Borrower> findByFirstNameContainingIgnoreCase(String firstName);
+	  List<Borrower> findByLastNameContainingIgnoreCase(String lastName);
+	  List<Borrower> findByPhoneContaining(String phone);
+	  Borrower findByEmail(String email);
 	  
 	    
 }

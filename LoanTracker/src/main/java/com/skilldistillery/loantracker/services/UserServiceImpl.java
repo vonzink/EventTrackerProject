@@ -14,29 +14,61 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepo;
 
+	@Override
+	public Optional<User> findById(int id) {
+		Optional<User> opt = userRepo.findById(id);
+		return Optional.of(opt.orElse(null));
+	}
+
+	@Override
+	public Optional<User> findByUsername(String username) {
+		return Optional.of(userRepo.findByUsername(username));
+	}
+
+	@Override
 	public List<User> findAll() {
 		return userRepo.findAll();
 	}
 
 	@Override
-	public User findById(int id) {
-		return userRepo.findById(id).orElse(null);
+	public List<User> findByFirstName(String firstName) {
+		return userRepo.findByFirstNameContainingIgnoreCase(firstName);
+	}
+
+	@Override
+	public List<User> findByLastName(String lastName) {
+		return userRepo.findByLastNameContainingIgnoreCase(lastName);
+	}
+
+	@Override
+	public List<User> findByEmail(String email) {
+		return userRepo.findByEmailContainingIgnoreCase(email);
+	}
+
+	@Override
+	public List<User> findByRole(String role) {
+		return userRepo.findByRoleIgnoreCase(role);
+	}
+
+	@Override
+	public User create(User user) {
+		return userRepo.save(user);
 	}
 
 	@Override
 	public User update(int id, User user) {
-	    Optional<User> existingOpt = userRepo.findById(id);
-	    if (existingOpt.isPresent()) {
-	        User existing = existingOpt.get();
-	        existing.setFirstName(user.getFirstName());
-	        existing.setLastName(user.getLastName());
-	        existing.setEmail(user.getEmail());
-	        existing.setUsername(user.getUsername());
-	        existing.setPassword(user.getPassword());
-	        existing.setRole(user.getRole());
-	        return userRepo.save(existing);
-	    }
-	    return null;
+		Optional<User> opt = userRepo.findById(id);
+		if (opt.isPresent()) {
+			User existing = opt.get();
+			existing.setFirstName(user.getFirstName());
+			existing.setLastName(user.getLastName());
+			existing.setUsername(user.getUsername());
+			existing.setEmail(user.getEmail());
+			existing.setPassword(user.getPassword());
+			existing.setRole(user.getRole());
+			return userRepo.save(existing);
+		}
+		return null;
 	}
 
 	@Override
@@ -47,10 +79,4 @@ public class UserServiceImpl implements UserService {
 		}
 		return false;
 	}
-
-	@Override
-	public User create(User user) {
-		return userRepo.save(user);
-	}
-
 }

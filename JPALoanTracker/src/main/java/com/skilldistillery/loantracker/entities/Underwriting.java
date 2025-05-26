@@ -1,9 +1,8 @@
 package com.skilldistillery.loantracker.entities;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,7 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,8 +22,7 @@ public class Underwriting {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "application_id")
-	private int applicationId;
+
 	@Column(name = "underwriter_name")
 	private String underwriterName;
 	private String findings;
@@ -31,24 +30,22 @@ public class Underwriting {
 	private LocalDate reviewedDate;
 	private String decision;
 
-	@OneToMany(mappedBy = "underwriting")
+	@OneToOne
+	@JoinColumn(name = "application_id")
 	@JsonIgnore
-	private List<Application> applications;
-
+	private Application application;
 	public Underwriting() {
 		super();
 	}
 
-	public Underwriting(int id, int applicationId, String underwriterName, String findings, LocalDate reviewedDate,
-			String decision, User user) {
-		super();
+	public Underwriting(int id, Application application, String underwriterName, String findings,
+			LocalDate reviewedDate, String decision) {
 		this.id = id;
-		this.applicationId = applicationId;
+		this.application = application;
 		this.underwriterName = underwriterName;
 		this.findings = findings;
 		this.reviewedDate = reviewedDate;
 		this.decision = decision;
-
 	}
 
 	public int getId() {
@@ -57,14 +54,6 @@ public class Underwriting {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getApplicationId() {
-		return applicationId;
-	}
-
-	public void setApplicationId(int applicationId) {
-		this.applicationId = applicationId;
 	}
 
 	public String getUnderwriterName() {
@@ -99,24 +88,17 @@ public class Underwriting {
 		this.decision = decision;
 	}
 
+	public Application getApplication() {
+		return application;
+	}
+
+	public void setApplication(Application application) {
+		this.application = application;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(applicationId, decision, findings, id, reviewedDate, underwriterName);
-	}
-
-	public List<Application> getApplications() {
-		return applications;
-	}
-
-	public void setApplications(List<Application> applications) {
-		this.applications = applications;
-	}
-
-	public void addApplication(Application app) {
-		if (applications == null)
-			applications = new ArrayList<>();
-		applications.add(app);
-		app.setUnderwriting(this);
+		return Objects.hash(application, decision, findings, id, reviewedDate, underwriterName);
 	}
 
 	@Override
@@ -128,7 +110,7 @@ public class Underwriting {
 		if (getClass() != obj.getClass())
 			return false;
 		Underwriting other = (Underwriting) obj;
-		return applicationId == other.applicationId && Objects.equals(decision, other.decision)
+		return Objects.equals(application, other.application) && Objects.equals(decision, other.decision)
 				&& Objects.equals(findings, other.findings) && id == other.id
 				&& Objects.equals(reviewedDate, other.reviewedDate)
 				&& Objects.equals(underwriterName, other.underwriterName);
@@ -136,9 +118,8 @@ public class Underwriting {
 
 	@Override
 	public String toString() {
-		return "Underwriting [id=" + id + ", applicationId=" + applicationId + ", underwriterName=" + underwriterName
-				+ ", findings=" + findings + ", reviewedDate=" + reviewedDate + ", decision=" + decision + ", user="
-				+ "]";
+		return "Underwriting [id=" + id + ", underwriterName=" + underwriterName + ", findings=" + findings
+				+ ", reviewedDate=" + reviewedDate + ", decision=" + decision + ", application=" + application + "]";
 	}
 
 }

@@ -21,8 +21,8 @@ public class Funded {
 	private int id; 
 	
 	@OneToOne
-    @JoinColumn(name = "application_id")
-    private Application application;
+	@JoinColumn(name = "application_id")
+	private Application application;
 
     @Column(name = "funded_date")
     private LocalDate fundedDate;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,10 +16,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "applications")
+@Table(name = "application")
 public class Application {
 
 	@Id
@@ -41,18 +42,20 @@ public class Application {
 	@JoinColumn(name = "borrower_id")
 	private Borrower borrower;
 
-	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
-	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
-	private List<Status> statuses;
-
-	@ManyToOne
-	@JoinColumn(name = "underwriting_id")
+	@OneToOne(mappedBy = "application", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Underwriting underwriting;
 
+	@OneToMany(mappedBy = "application")
+	@JsonIgnore
+	private List<Status> statuses;
+	
+	
 	// Constructors
 	public Application() {
 		super();
