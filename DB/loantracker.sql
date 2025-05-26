@@ -46,7 +46,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `borrower` ;
 
 CREATE TABLE IF NOT EXISTS `borrower` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(50) NOT NULL,
   `last_name` VARCHAR(50) NOT NULL,
   `email` VARCHAR(100) NULL,
@@ -96,16 +96,18 @@ DROP TABLE IF EXISTS `approved` ;
 
 CREATE TABLE IF NOT EXISTS `approved` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `application_id` INT NULL DEFAULT NULL,
   `approval_date` DATE NULL DEFAULT NULL,
   `approval_notes` TEXT NULL DEFAULT NULL,
   `interest_rate` DECIMAL(5,3) NULL DEFAULT NULL,
   `term_years` INT NULL DEFAULT NULL,
+  `applications_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `application_id` (`application_id` ASC) VISIBLE,
-  CONSTRAINT `approved_ibfk_1`
-    FOREIGN KEY (`application_id`)
-    REFERENCES `applications` (`id`))
+  INDEX `fk_approved_applications1_idx` (`applications_id` ASC) VISIBLE,
+  CONSTRAINT `fk_approved_applications1`
+    FOREIGN KEY (`applications_id`)
+    REFERENCES `applications` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
@@ -119,15 +121,17 @@ DROP TABLE IF EXISTS `closed` ;
 
 CREATE TABLE IF NOT EXISTS `closed` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `application_id` INT NULL DEFAULT NULL,
   `closing_date` DATE NULL DEFAULT NULL,
   `settlement_agent` VARCHAR(100) NULL DEFAULT NULL,
   `notes` TEXT NULL DEFAULT NULL,
+  `applications_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `application_id` (`application_id` ASC) VISIBLE,
-  CONSTRAINT `closed_ibfk_1`
-    FOREIGN KEY (`application_id`)
-    REFERENCES `applications` (`id`))
+  INDEX `fk_closed_applications1_idx` (`applications_id` ASC) VISIBLE,
+  CONSTRAINT `fk_closed_applications1`
+    FOREIGN KEY (`applications_id`)
+    REFERENCES `applications` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
@@ -141,15 +145,17 @@ DROP TABLE IF EXISTS `ctc` ;
 
 CREATE TABLE IF NOT EXISTS `ctc` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `application_id` INT NULL DEFAULT NULL,
   `cleared_by` VARCHAR(100) NULL DEFAULT NULL,
   `ctc_date` DATE NULL DEFAULT NULL,
   `notes` TEXT NULL DEFAULT NULL,
+  `applications_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `application_id` (`application_id` ASC) VISIBLE,
-  CONSTRAINT `ctc_ibfk_1`
-    FOREIGN KEY (`application_id`)
-    REFERENCES `applications` (`id`))
+  INDEX `fk_ctc_applications1_idx` (`applications_id` ASC) VISIBLE,
+  CONSTRAINT `fk_ctc_applications1`
+    FOREIGN KEY (`applications_id`)
+    REFERENCES `applications` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
@@ -163,14 +169,16 @@ DROP TABLE IF EXISTS `declined` ;
 
 CREATE TABLE IF NOT EXISTS `declined` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `application_id` INT NULL DEFAULT NULL,
   `declined_date` DATE NULL DEFAULT NULL,
   `reason` TEXT NULL DEFAULT NULL,
+  `applications_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `application_id` (`application_id` ASC) VISIBLE,
-  CONSTRAINT `declined_ibfk_1`
-    FOREIGN KEY (`application_id`)
-    REFERENCES `applications` (`id`))
+  INDEX `fk_declined_applications1_idx` (`applications_id` ASC) VISIBLE,
+  CONSTRAINT `fk_declined_applications1`
+    FOREIGN KEY (`applications_id`)
+    REFERENCES `applications` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
@@ -211,15 +219,17 @@ DROP TABLE IF EXISTS `funded` ;
 
 CREATE TABLE IF NOT EXISTS `funded` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `application_id` INT NULL DEFAULT NULL,
   `funded_date` DATE NULL DEFAULT NULL,
   `wire_amount` DECIMAL(12,2) NULL DEFAULT NULL,
   `wire_confirmation` VARCHAR(100) NULL DEFAULT NULL,
+  `applications_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `application_id` (`application_id` ASC) VISIBLE,
-  CONSTRAINT `funded_ibfk_1`
-    FOREIGN KEY (`application_id`)
-    REFERENCES `applications` (`id`))
+  INDEX `fk_funded_applications1_idx` (`applications_id` ASC) VISIBLE,
+  CONSTRAINT `fk_funded_applications1`
+    FOREIGN KEY (`applications_id`)
+    REFERENCES `applications` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
@@ -260,16 +270,18 @@ DROP TABLE IF EXISTS `underwriting` ;
 
 CREATE TABLE IF NOT EXISTS `underwriting` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `application_id` INT NULL DEFAULT NULL,
   `underwriter_name` VARCHAR(100) NULL DEFAULT NULL,
   `findings` TEXT NULL DEFAULT NULL,
   `reviewed_date` DATE NULL DEFAULT NULL,
   `decision` VARCHAR(50) NULL DEFAULT NULL,
+  `applications_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `application_id` (`application_id` ASC) VISIBLE,
-  CONSTRAINT `underwriting_ibfk_1`
-    FOREIGN KEY (`application_id`)
-    REFERENCES `applications` (`id`))
+  INDEX `fk_underwriting_applications1_idx` (`applications_id` ASC) VISIBLE,
+  CONSTRAINT `fk_underwriting_applications1`
+    FOREIGN KEY (`applications_id`)
+    REFERENCES `applications` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
@@ -320,7 +332,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `approved` (`id`, `application_id`, `approval_date`, `approval_notes`, `interest_rate`, `term_years`) VALUES (1, 1, '2025-02-02', 'test', 6, 30);
+INSERT INTO `approved` (`id`, `approval_date`, `approval_notes`, `interest_rate`, `term_years`, `applications_id`) VALUES (1, '2025-02-02', 'test', 6, 30, DEFAULT);
 
 COMMIT;
 
@@ -330,7 +342,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `closed` (`id`, `application_id`, `closing_date`, `settlement_agent`, `notes`) VALUES (1, 1, '2025-03-03', 'title', 'test');
+INSERT INTO `closed` (`id`, `closing_date`, `settlement_agent`, `notes`, `applications_id`) VALUES (1, '2025-03-03', 'title', 'test', DEFAULT);
 
 COMMIT;
 
@@ -340,7 +352,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `ctc` (`id`, `application_id`, `cleared_by`, `ctc_date`, `notes`) VALUES (1, 1, '1', '2025-05-05', 'test');
+INSERT INTO `ctc` (`id`, `cleared_by`, `ctc_date`, `notes`, `applications_id`) VALUES (1, '1', '2025-05-05', 'test', DEFAULT);
 
 COMMIT;
 
@@ -350,7 +362,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `declined` (`id`, `application_id`, `declined_date`, `reason`) VALUES (1, 1, '2025-05-05', 'Credit');
+INSERT INTO `declined` (`id`, `declined_date`, `reason`, `applications_id`) VALUES (1, '2025-05-05', 'Credit', DEFAULT);
 
 COMMIT;
 
@@ -361,6 +373,16 @@ COMMIT;
 START TRANSACTION;
 USE `loantrackerdb`;
 INSERT INTO `documentation` (`id`, `application_id`, `doc_type`, `file_path`, `uploaded_by`, `uploaded_at`) VALUES (1, 1, 'Income', 'http://', 1, '2025-01-01');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `funded`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `loantrackerdb`;
+INSERT INTO `funded` (`id`, `funded_date`, `wire_amount`, `wire_confirmation`, `applications_id`) VALUES (1, '2025-01-05', 250000, '10000', DEFAULT);
 
 COMMIT;
 
@@ -380,7 +402,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `underwriting` (`id`, `application_id`, `underwriter_name`, `findings`, `reviewed_date`, `decision`) VALUES (1, 1, 'seth', 'Approved Eligible', '2025-02-02', 'Approved');
+INSERT INTO `underwriting` (`id`, `underwriter_name`, `findings`, `reviewed_date`, `decision`, `applications_id`) VALUES (1, 'seth', 'Approved Eligible', '2025-02-02', 'Approved', DEFAULT);
 
 COMMIT;
 

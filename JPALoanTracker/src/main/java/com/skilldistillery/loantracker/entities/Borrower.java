@@ -1,6 +1,7 @@
 package com.skilldistillery.loantracker.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,28 +16,28 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="borrower")
+@Table(name = "borrower")
 public class Borrower {
 
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-	 @Column(name = "first_name")
-	 private String firstName;
+	@Column(name = "first_name")
+	private String firstName;
 
-	 @Column(name = "last_name")
-	 private String lastName;
+	@Column(name = "last_name")
+	private String lastName;
 
-	 private String email;
-	 private String phone;
+	private String email;
+	private String phone;
 
-	 @Column(name = "created_at")
-	 private LocalDateTime createdAt;
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
 
-	 @JsonIgnore
-	 @OneToMany(mappedBy = "borrower")
-	 private List<Application> applications;
+	@JsonIgnore
+	@OneToMany(mappedBy = "borrower")
+	private List<Application> applications;
 
 	public Borrower() {
 		super();
@@ -110,6 +111,13 @@ public class Borrower {
 		this.applications = applications;
 	}
 
+	public void addApplication(Application app) {
+		if (applications == null)
+			applications = new ArrayList<>();
+		applications.add(app);
+		app.setBorrower(this);
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(applications, createdAt, email, firstName, id, lastName, phone);
@@ -135,6 +143,4 @@ public class Borrower {
 				+ ", phone=" + phone + ", createdAt=" + createdAt + ", applications=" + applications + "]";
 	}
 
-	
-	
 }

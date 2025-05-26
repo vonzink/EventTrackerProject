@@ -1,15 +1,18 @@
 package com.skilldistillery.loantracker.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,6 +30,10 @@ public class Underwriting {
 	@Column(name = "reviewed_date")
 	private LocalDate reviewedDate;
 	private String decision;
+
+	@OneToMany(mappedBy = "underwriting")
+	@JsonIgnore
+	private List<Application> applications;
 
 	public Underwriting() {
 		super();
@@ -95,6 +102,21 @@ public class Underwriting {
 	@Override
 	public int hashCode() {
 		return Objects.hash(applicationId, decision, findings, id, reviewedDate, underwriterName);
+	}
+
+	public List<Application> getApplications() {
+		return applications;
+	}
+
+	public void setApplications(List<Application> applications) {
+		this.applications = applications;
+	}
+
+	public void addApplication(Application app) {
+		if (applications == null)
+			applications = new ArrayList<>();
+		applications.add(app);
+		app.setUnderwriting(this);
 	}
 
 	@Override

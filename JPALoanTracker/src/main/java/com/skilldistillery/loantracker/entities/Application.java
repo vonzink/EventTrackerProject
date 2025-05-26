@@ -1,8 +1,13 @@
 package com.skilldistillery.loantracker.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,8 +25,7 @@ public class Application {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "user_id")
-	private String userId;
+
 	@Column(name = "property_address")
 	private String propertyAddress;
 	@Column(name = "loan_amount")
@@ -35,7 +40,19 @@ public class Application {
 	@ManyToOne
 	@JoinColumn(name = "borrower_id")
 	private Borrower borrower;
-	
+
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
+	private List<Status> statuses;
+
+	@ManyToOne
+	@JoinColumn(name = "underwriting_id")
+	private Underwriting underwriting;
+
 	// Constructors
 	public Application() {
 		super();
@@ -45,7 +62,6 @@ public class Application {
 			String purpose, LocalDate submittedDate, String status) {
 		super();
 		this.id = id;
-		this.userId = userId;
 		this.propertyAddress = propertyAddress;
 		this.loanAmount = loanAmount;
 		this.loanType = loanType;
@@ -55,20 +71,21 @@ public class Application {
 	}
 
 	// getters and setters
+
 	public int getId() {
 		return id;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 	public String getPropertyAddress() {
@@ -127,10 +144,33 @@ public class Application {
 		this.borrower = borrower;
 	}
 
+	public List<Status> getStatuses() {
+		return statuses;
+	}
+
+	public void setStatuses(List<Status> statuses) {
+		this.statuses = statuses;
+	}
+
+	public Underwriting getUnderwriting() {
+		return underwriting;
+	}
+
+	public void setUnderwriting(Underwriting underwriting) {
+		this.underwriting = underwriting;
+	}
+
+	public void addStatus(Status status) {
+		if (statuses == null)
+			statuses = new ArrayList<>();
+		statuses.add(status);
+		status.setApplication(this);
+	}
+
 	// Hashcode and Equals
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, loanAmount, loanType, propertyAddress, purpose, status, submittedDate, userId);
+		return Objects.hash(id, loanAmount, loanType, propertyAddress, purpose, status, submittedDate);
 	}
 
 	@Override
@@ -145,13 +185,13 @@ public class Application {
 		return id == other.id && Objects.equals(loanAmount, other.loanAmount)
 				&& Objects.equals(loanType, other.loanType) && Objects.equals(propertyAddress, other.propertyAddress)
 				&& Objects.equals(purpose, other.purpose) && Objects.equals(status, other.status)
-				&& Objects.equals(submittedDate, other.submittedDate) && Objects.equals(userId, other.userId);
+				&& Objects.equals(submittedDate, other.submittedDate);
 	}
 
 	// toString
 	@Override
 	public String toString() {
-		return "Application [id=" + id + ", userId=" + userId + ", propertyAddress=" + propertyAddress + ", loanAmount="
+		return "Application [id=" + id + ", userId=" + ", propertyAddress=" + propertyAddress + ", loanAmount="
 				+ loanAmount + ", loanType=" + loanType + ", purpose=" + purpose + ", submittedDate=" + submittedDate
 				+ ", status=" + status + "]";
 	}

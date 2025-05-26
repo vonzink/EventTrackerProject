@@ -18,13 +18,13 @@ import com.skilldistillery.loantracker.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("api")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping({"users", "user/"})
     public List<User> index(HttpServletResponse res) {
         List<User> users = userService.findAll();
         if (users == null || users.isEmpty()) {
@@ -33,8 +33,8 @@ public class UserController {
         return users;
     }
 
-    @GetMapping("{id}")
-    public User show(@PathVariable int id, HttpServletResponse res) {
+    @GetMapping("users/{id}")
+    public User show(@PathVariable("id") int id, HttpServletResponse res) {
         User user = userService.findById(id);
         if (user == null) {
             res.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404
@@ -42,7 +42,7 @@ public class UserController {
         return user;
     }
 
-    @PostMapping
+    @PostMapping({"users", "user/"})
     public User create(@RequestBody User user, HttpServletResponse res) {
         try {
             user = userService.create(user);
@@ -54,22 +54,19 @@ public class UserController {
         return user;
     }
 
-    @PutMapping("{id}")
-    public User update(@PathVariable int id, @RequestBody User user, HttpServletResponse res) {
-        try {
-            user = userService.update(id, user);
-            if (user == null) {
-                res.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404
-            }
-        } catch (Exception e) {
-            res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
-            user = null;
+    @PutMapping("users/{id}")
+    public User update(@PathVariable("id") int id, @RequestBody User user, HttpServletResponse res) {
+        User updated = userService.update(id, user);
+        if (updated == null) {
+            res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            res.setStatus(HttpServletResponse.SC_OK);
         }
-        return user;
+        return updated;
     }
 
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable int id, HttpServletResponse res) {
+    @DeleteMapping("users/{id}")
+    public void delete(@PathVariable("id") int id, HttpServletResponse res) {
         try {
             boolean deleted = userService.delete(id);
             if (deleted) {

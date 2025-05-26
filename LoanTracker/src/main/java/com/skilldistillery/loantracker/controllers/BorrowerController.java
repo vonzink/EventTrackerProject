@@ -1,5 +1,6 @@
 package com.skilldistillery.loantracker.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class BorrowerController {
     }
 
     @GetMapping("{id}")
-    public Borrower show(@PathVariable int id, HttpServletResponse res) {
+    public Borrower show(@PathVariable("id") int id, HttpServletResponse res) {
         Borrower borrower = borrowerService.findById(id);
         if (borrower == null) {
             res.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404
@@ -45,6 +46,7 @@ public class BorrowerController {
     @PostMapping
     public Borrower create(@RequestBody Borrower borrower, HttpServletResponse res) {
         try {
+        	 borrower.setCreatedAt(LocalDateTime.now());
             borrower = borrowerService.create(borrower);
             res.setStatus(HttpServletResponse.SC_CREATED); // 201
         } catch (Exception e) {
@@ -55,7 +57,7 @@ public class BorrowerController {
     }
 
     @PutMapping("{id}")
-    public Borrower update(@PathVariable int id, @RequestBody Borrower borrower, HttpServletResponse res) {
+    public Borrower update(@PathVariable("id") int id, @RequestBody Borrower borrower, HttpServletResponse res) {
         try {
             borrower = borrowerService.update(id, borrower);
             if (borrower == null) {
@@ -69,7 +71,7 @@ public class BorrowerController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable int id, HttpServletResponse res) {
+    public void delete(@PathVariable("id") int id, HttpServletResponse res) {
         try {
             boolean deleted = borrowerService.delete(id);
             if (deleted) {

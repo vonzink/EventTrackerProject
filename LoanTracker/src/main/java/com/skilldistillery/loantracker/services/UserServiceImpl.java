@@ -12,37 +12,37 @@ import com.skilldistillery.loantracker.repositories.UserRepository;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserRepository userRepo;
 
 	public List<User> findAll() {
-		return userRepository.findAll();
+		return userRepo.findAll();
 	}
 
 	@Override
 	public User findById(int id) {
-		return userRepository.findById(id).orElse(null);
+		return userRepo.findById(id).orElse(null);
 	}
 
 	@Override
 	public User update(int id, User user) {
-		Optional<User> existingOpt = userRepository.findById(id);
-		if (existingOpt.isPresent()) {
-			User existing = existingOpt.get();
-			existing.setFirstName(user.getFirstName());
-			existing.setLastName(user.getLastName());
-			existing.setEmail(user.getEmail());
-			existing.setUsername(user.getUsername());
-			existing.setPassword(user.getPassword());
-			existing.setRole(user.getRole());
-			return userRepository.save(existing);
-		}
-		return null;
+	    Optional<User> existingOpt = userRepo.findById(id);
+	    if (existingOpt.isPresent()) {
+	        User existing = existingOpt.get();
+	        existing.setFirstName(user.getFirstName());
+	        existing.setLastName(user.getLastName());
+	        existing.setEmail(user.getEmail());
+	        existing.setUsername(user.getUsername());
+	        existing.setPassword(user.getPassword());
+	        existing.setRole(user.getRole());
+	        return userRepo.save(existing);
+	    }
+	    return null;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		if (userRepository.existsById(id)) {
-			userRepository.deleteById(id);
+		if (userRepo.existsById(id)) {
+			userRepo.deleteById(id);
 			return true;
 		}
 		return false;
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User create(User user) {
-		return userRepository.save(user);
+		return userRepo.save(user);
 	}
 
 }

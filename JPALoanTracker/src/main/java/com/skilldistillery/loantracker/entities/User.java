@@ -1,13 +1,15 @@
 package com.skilldistillery.loantracker.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,11 +31,15 @@ public class User {
 	private String password;
 	private String email;
 	private String role;
+
+	@OneToMany(mappedBy = "changedBy")
+	private List<Status> statuses;
+
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "userId")
+	@JsonManagedReference
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Application> applications;
 
 	public User() {
@@ -126,6 +132,13 @@ public class User {
 		this.applications = applications;
 	}
 
+	public void addStatus(Status status) {
+		if (statuses == null)
+			statuses = new ArrayList<>();
+		statuses.add(status);
+		status.setChangedBy(this);
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(applications, createdAt, email, firstName, id, lastName, password, role, username);
@@ -152,4 +165,5 @@ public class User {
 				+ ", password=" + password + ", email=" + email + ", role=" + role + ", createdAt=" + createdAt
 				+ ", applications=" + applications + "]";
 	}
+
 }

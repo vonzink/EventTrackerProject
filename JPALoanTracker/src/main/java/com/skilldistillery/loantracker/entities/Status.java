@@ -3,6 +3,8 @@ package com.skilldistillery.loantracker.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +35,7 @@ public class Status {
 	@JoinColumn(name = "changed_by")
 	private User changedBy;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "application_id")
 	private Application application;

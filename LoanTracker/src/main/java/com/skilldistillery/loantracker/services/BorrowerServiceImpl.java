@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import com.skilldistillery.loantracker.entities.Borrower;
 import com.skilldistillery.loantracker.repositories.BorrowerRepository;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
+@Transactional
 public class BorrowerServiceImpl implements BorrowerService {
 
 
@@ -22,6 +25,7 @@ public class BorrowerServiceImpl implements BorrowerService {
 	    }
 
 	    @Override
+	    @Transactional
 	    public Borrower findById(int id) {
 	        return borrowerRepo.findById(id).orElse(null);
 	    }
