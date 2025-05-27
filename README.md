@@ -18,7 +18,7 @@ LoanTracker is a full-stack Spring Boot application designed to manage the lifec
 
  ## SQL Diagram
 
-![Diagram](diagram.jpg)
+![Diagram](/Users/zacharyzink/SD/Java/EventTracker/images/diagram.jpg)
 
  ## Entities & Relationships
 

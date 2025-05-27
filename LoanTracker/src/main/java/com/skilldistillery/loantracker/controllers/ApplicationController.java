@@ -31,7 +31,6 @@ public class ApplicationController {
 		}
 		return app;
 	}
-
 	@PostMapping("applications")
 	public Application create(@RequestBody Application app, HttpServletResponse res) {
 		try {
@@ -61,10 +60,26 @@ public class ApplicationController {
 			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
+	@PutMapping("applications/{id}/disable")
+	public boolean disableApplication(@PathVariable int id) {
+	    return appService.disable(id);
+	}
 
-	// 🔍 Search endpoints
+	@PutMapping("applications/{id}/enable")
+	public boolean enableApplication(@PathVariable int id) {
+	    return appService.enable(id);
+	}
+	@GetMapping("applications/active")
+	public List<Application> getEnabledApplications() {
+	    return appService.findAllEnabled();
+	}
+
 	@GetMapping("applications/search/name")
-	public List<Application> findByName(@RequestParam("name") String name) {
+	public List<Application> findByName(@RequestParam("name") String name, HttpServletResponse res) {
+		if (name == null || name.trim().isEmpty()) {
+			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return null;
+		}
 		return appService.findByBorrowerLastName(name);
 	}
 

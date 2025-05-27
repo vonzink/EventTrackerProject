@@ -34,22 +34,21 @@ public class StatusController {
 	    try {
 	        Application app = appService.findById(appId);
 	        if (app == null) {
-	            res.setStatus(404);
+	            res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	            return null;
 	        }
 	        status.setApplication(app);
-	        status.setChangedAt(LocalDateTime.now()); // set timestamp here
+	        status.setChangedAt(LocalDateTime.now());
 	        return statusService.create(status);
 	    } catch (Exception e) {
-	        res.setStatus(400);
+	        res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	        return null;
 	    }
 	}
 
-	@GetMapping("/application/{appId}")
+	@GetMapping("applications/{appId}/status")
 	public List<Status> getStatusHistory(@PathVariable("appId") int appId) {
-		return statusService.getStatusHistory(appId);
+	    return statusService.getStatusHistory(appId);
 	}
-	
 	
 }

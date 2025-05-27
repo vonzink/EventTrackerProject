@@ -33,6 +33,8 @@ public class Application {
 	private String loanAmount;
 	@Column(name = "loan_type")
 	private String loanType;
+	@Column(name = "enable")
+	private boolean enable = true;
 	private String purpose;
 	@Column(name = "submitted_date")
 	private LocalDate submittedDate;
@@ -93,6 +95,14 @@ public class Application {
 
 	public String getPropertyAddress() {
 		return propertyAddress;
+	}
+	
+	public boolean isEnabled() {
+		return enable;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enable = enabled;
 	}
 
 	public void setPropertyAddress(String propertyAddress) {

@@ -21,7 +21,6 @@ public class ClearToCloseServiceImpl implements ClearToCloseService {
 	    public List<ClearToClose> findAll() {
 	        return repo.findAll();
 	    }
-
 	    @Override
 	    public List<ClearToClose> findByCtcDateIsNotNull() {
 	        return repo.findByCtcDateIsNotNull();

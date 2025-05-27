@@ -48,16 +48,5 @@ public class ApprovedServiceImpl implements ApprovedService {
                     existing.setApplication(approved.getApplication());
                     return approvedRepo.save(existing);
                 }).orElse(null);
-    }
-
-	@Override
-    public boolean delete(int id) {
-        if (approvedRepo.existsById(id)) {
-            approvedRepo.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-	
+    }	
 }

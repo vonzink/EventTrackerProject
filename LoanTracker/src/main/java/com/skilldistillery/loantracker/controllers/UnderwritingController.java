@@ -79,7 +79,7 @@ public class UnderwritingController {
 	    }
 
 	    @DeleteMapping("{id}")
-	    public void delete(@PathVariable int id, HttpServletResponse res) {
+	    public void delete(@PathVariable("id") int id, HttpServletResponse res) {
 	        if (uwService.delete(id)) {
 	            res.setStatus(HttpServletResponse.SC_NO_CONTENT);
 	        } else {

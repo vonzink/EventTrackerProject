@@ -16,6 +16,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 	    List<Application> findByStatus(String status);
 	    List<Application> findBySubmittedDateBetween(LocalDate start, LocalDate end);
 	    List<Application> findByBorrowerId(int borrowerId);
+	    List<Application> findByEnabledTrue();
 	  
 	    
 }

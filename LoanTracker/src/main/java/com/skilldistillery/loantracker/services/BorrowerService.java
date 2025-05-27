@@ -1,7 +1,6 @@
 package com.skilldistillery.loantracker.services;
 
 import java.util.List;
-
 import com.skilldistillery.loantracker.entities.Borrower;
 
 public interface BorrowerService {

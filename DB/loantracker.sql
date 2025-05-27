@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `application` (
   `status` VARCHAR(50) NULL DEFAULT 'APPLICATION',
   `borrower_id` INT NOT NULL,
   `loan_number` INT NULL,
+  `enable` TINYINT NULL,
   PRIMARY KEY (`id`),
   INDEX `user_id` (`user_id` ASC) VISIBLE,
   INDEX `fk_applications_borrower1_idx` (`borrower_id` ASC) VISIBLE,
@@ -299,6 +300,9 @@ START TRANSACTION;
 USE `loantrackerdb`;
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`, `created_at`, `first_name`, `last_name`) VALUES (1, 'vonzink', '1234', 'vonzink@gmail.com', 'LO', '2025-01-01', 'Zach', 'Zink');
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`, `created_at`, `first_name`, `last_name`) VALUES (2, 'bzink', '1234', 'bzink@gmail.com', 'processor', '2025-01-01', 'Brook', 'Zink');
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`, `created_at`, `first_name`, `last_name`) VALUES (3, 'b3', '1234', 'b3@gmail.com', 'LO', '2025-01-01', 'Tanya', 'Long');
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`, `created_at`, `first_name`, `last_name`) VALUES (4, 'b4', '1234', 'b4', 'LO', '2025-01-01', 'Mike', 'Wilson');
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`, `created_at`, `first_name`, `last_name`) VALUES (5, 'b5', '1234', 'b5', 'LO', '2025-01-01', 'Josh', 'Souel');
 
 COMMIT;
 
@@ -322,7 +326,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `loantrackerdb`;
-INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`) VALUES (1, 1, '78 The Lane Road', 500000, 'FHA', 'Purchase', '2024-05-12', 'Application', 1, 1000);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (1, 1, '78 The Lane Road', 500000, 'FHA', 'Purchase', '2024-05-12', 'Application', 1, 1000, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (2, 2, '123 main st', 250000, 'CONV', 'Refi', '2025-05-05', 'Underwriting', 2, 1201, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (3, 3, '321 Broadway', 350000, 'VA', 'Purchase', '2025-05-05', 'closing', 3, 1351, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (4, 4, '555 wolf street', 780000, 'Jumbo', 'Purchase', '2025-01-01', 'funding', 4, 6514, 1);
 
 COMMIT;
 
@@ -393,6 +400,8 @@ COMMIT;
 START TRANSACTION;
 USE `loantrackerdb`;
 INSERT INTO `status` (`id`, `application_id`, `status`, `changed_by`, `changed_at`, `notes`) VALUES (1, 1, 'Application', 1, '2025-01-01', 'test');
+INSERT INTO `status` (`id`, `application_id`, `status`, `changed_by`, `changed_at`, `notes`) VALUES (2, 2, 'Approved', 2, '2025-01-01', 'approved');
+INSERT INTO `status` (`id`, `application_id`, `status`, `changed_by`, `changed_at`, `notes`) VALUES (3, 3, 'closed', 3, '2025-05-04', 'closed');
 
 COMMIT;
 

@@ -2,6 +2,7 @@ package com.skilldistillery.loantracker.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,29 @@ public class ApplicationServiceImpl implements ApplicationService {
 	        }
 	        return false;
 	    }
+	    @Override
+	    public boolean disable(int id) {
+	        Optional<Application> opt = appRepo.findById(id);
+	        if (opt.isPresent()) {
+	            Application app = opt.get();
+	            app.setEnabled(false);
+	            appRepo.save(app);
+	            return true;
+	        }
+	        return false;
+	    }
+
+	    @Override
+	    public boolean enable(int id) {
+	        Optional<Application> opt = appRepo.findById(id);
+	        if (opt.isPresent()) {
+	            Application app = opt.get();
+	            app.setEnabled(true);
+	            appRepo.save(app);
+	            return true;
+	        }
+	        return false;
+	    }
 	    public List<Application> findByPropertyAddress(String address) {
 	        return appRepo.findByPropertyAddressContainingIgnoreCase(address);
 	    }
@@ -51,5 +75,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 		public List<Application> findByBorrowerLastName(String name) {
 			 return appRepo.findByBorrowerLastNameContainingIgnoreCase(name); 
+		}
+		@Override
+		public List<Application> findAllEnabled() {
+			return appRepo.findByEnabledTrue();
 		}
 }

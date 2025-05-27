@@ -34,7 +34,6 @@ public class Approved {
 	@Column(name = "term_years")
 	private int termYears;
 
-	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "application_id")
 	private Application application;

@@ -12,5 +12,5 @@ public interface ApprovedService {
 	    Optional<Approved> findByApplicationId(int appId);
 	    Approved create(Approved approved);
 	    Approved update(int id, Approved approved);
-	    boolean delete(int id);
+	
 }
