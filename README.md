@@ -32,9 +32,42 @@ LoanTracker is a full-stack Spring Boot application designed to manage the lifec
     7. Approved: Captures final approval details and notes
     8. ClearToClose / Closed / Declined / Funded: Final status entities
 
+
+ ## REST API Endpoints
+
+   ### applications
+   - GET /api/applciations
+   - GET /api/applciations/{id}
+   - POST /api/applications
+   - PUT /appi/applciations/{id}
+
  ## Lessons Learned
 
- - 
+ * i need to spend more time planning out my tables and JOINS to prevent having to go back to workbench and updated every class. 
+
+  * Mapping structure in the controller is a big deal and needs to be precise. 
+
+  * Mapping lessions - you needs to add both the name and the name with a slash in this format. { "applications", "applications/" }
+      - @PathVariable - when passing in a precise variable dont forget ("id")
+      - @ReqestBody - when updating the whole entity
+      - @RequestParam - when searching for a specific method
+
+   * When returning ServletResponses you can just type in the number of the error. 
+
+   * I keep writing more repos then i actually need. 
+
+   * just map every table to prevent mistakes
+         `` @Entity
+            @Table(name = "approved")
+            public class Approved {``
+
+   * Use Optional for collecting by individual pieces of infomration. 
+
+   * Use a try/catch when updating body with @RequestBody
+
+
+
+
 
 
  ## Notes

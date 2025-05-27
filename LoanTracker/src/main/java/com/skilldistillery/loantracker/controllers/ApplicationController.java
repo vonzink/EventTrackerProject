@@ -61,12 +61,12 @@ public class ApplicationController {
 		}
 	}
 	@PutMapping("applications/{id}/disable")
-	public boolean disableApplication(@PathVariable int id) {
+	public boolean disableApplication(@PathVariable("id") int id) {
 	    return appService.disable(id);
 	}
 
 	@PutMapping("applications/{id}/enable")
-	public boolean enableApplication(@PathVariable int id) {
+	public boolean enableApplication(@PathVariable("id") int id) {
 	    return appService.enable(id);
 	}
 	@GetMapping("applications/active")

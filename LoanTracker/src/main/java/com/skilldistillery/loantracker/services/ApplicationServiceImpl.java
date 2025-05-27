@@ -78,6 +78,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 		@Override
 		public List<Application> findAllEnabled() {
-			return appRepo.findByEnabledTrue();
+			return appRepo.findByEnableTrue();
 		}
 }
