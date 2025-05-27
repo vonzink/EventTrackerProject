@@ -18,7 +18,7 @@ LoanTracker is a full-stack Spring Boot application designed to manage the lifec
 
  ## SQL Diagram
 
-![Diagram](/Users/zacharyzink/SD/Java/EventTracker/images/diagram.jpg)
+![Diagram](/Users/zacharyzink/SD/Java/EventTracker/images/diagram.png)
 
  ## Entities & Relationships
 
@@ -35,11 +35,35 @@ LoanTracker is a full-stack Spring Boot application designed to manage the lifec
 
  ## REST API Endpoints
 
-   ### applications
-   - GET /api/applciations
-   - GET /api/applciations/{id}
-   - POST /api/applications
-   - PUT /appi/applciations/{id}
+
+
+| Entity       | HTTP Verb | URI                            | Request Body             | Response Body        | Status Codes                      |
+|--------------|-----------|--------------------------------|--------------------------|-----------------------|----------------------------------|
+| Borrower     | GET       | `/api/borrowers`               |                          | List of borrowers     | 200 OK                           |
+| Borrower     | GET       | `/api/borrowers/{id}`          |                          | Single borrower       | 200 OK, 404 Not Found            |
+| Borrower     | POST      | `/api/borrowers`               | JSON of new borrower     | Created borrower      | 201 Created, 400 Bad Request     |
+| Borrower     | PUT       | `/api/borrowers/{id}`          | JSON to update borrower  | Updated borrower      | 200 OK, 400, 404                 |
+| Borrower     | DELETE    | `/api/borrowers/{id}`          |                          |                       | 204 No Content, 404              |
+| Application  | GET       | `/api/applications`            |                          | List of applications  | 200 OK                           |
+| Application  | GET       | `/api/applications/{id}`       |                          | Single application    | 200 OK, 404 Not Found            |
+| Application  | POST      | `/api/applications`            | JSON of new application  | Created application   | 201 Created, 400 Bad Request     |
+| Application  | PUT       | `/api/applications/{id}`       | JSON to update           | Updated application   | 200 OK, 400, 404                 |
+| Application  | DELETE    | `/api/applications/{id}`       |                          |                       | 204 No Content, 404              |
+| Underwriter  | GET       | `/api/underwriters`            |                          | List of underwriters  | 200 OK                           |
+| Underwriter  | GET       | `/api/underwriters/{id}`       |                          | Single underwriter    | 200 OK, 404 Not Found            |
+| Underwriter  | POST      | `/api/underwriters`            | JSON of new underwriter  | Created underwriter   | 201 Created, 400 Bad Request     |
+| Underwriter  | PUT       | `/api/underwriters/{id}`       | JSON to update           | Updated underwriter   | 200 OK, 400, 404                 |
+| Underwriter  | DELETE    | `/api/underwriters/{id}`       |                          |                       | 204 No Content, 404              |
+| User         | GET       | `/api/users`                   |                          | List of users         | 200 OK                           |
+| User         | GET       | `/api/users/{id}`              |                          | Single user           | 200 OK, 404 Not Found            |
+| User         | POST      | `/api/users`                   | JSON of new user         | Created user          | 201 Created, 400 Bad Request     |
+| User         | PUT       | `/api/users/{id}`              | JSON to update           | Updated user          | 200 OK, 400, 404                 |
+| User         | DELETE    | `/api/users/{id}`              |                          |                       | 204 No Content, 404              |
+| Status       | GET       | `/api/statuses`                |                          | List of statuses      | 200 OK                           |
+| Status       | GET       | `/api/statuses/{id}`           |                          | Single status         | 200 OK, 404 Not Found            |
+| Status       | POST      | `/api/statuses`                | JSON of new status       | Created status        | 201 Created, 400 Bad Request     |
+| Status       | PUT       | `/api/statuses/{id}`           | JSON to update           | Updated status        | 200 OK, 400, 404                 |
+| Status       | DELETE    | `/api/statuses/{id}`           |                          |                       | 204 No Content, 404              |
 
  ## Lessons Learned
 
