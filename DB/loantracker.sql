@@ -5,9 +5,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
 -- Schema loantrackerdb
 -- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `loantrackerdb` ;
@@ -15,7 +12,7 @@ DROP SCHEMA IF EXISTS `loantrackerdb` ;
 -- -----------------------------------------------------
 -- Schema loantrackerdb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `loantrackerdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+CREATE SCHEMA IF NOT EXISTS `loantrackerdb` DEFAULT CHARACTER SET utf8 ;
 USE `loantrackerdb` ;
 
 -- -----------------------------------------------------
@@ -36,8 +33,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE INDEX `username` (`username` ASC) VISIBLE)
 ENGINE = InnoDB
 AUTO_INCREMENT = 31
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -47,13 +43,14 @@ DROP TABLE IF EXISTS `borrower` ;
 
 CREATE TABLE IF NOT EXISTS `borrower` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `first_name` VARCHAR(50) NOT NULL,
+  `first_name` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL,
   `last_name` VARCHAR(50) NOT NULL,
   `email` VARCHAR(100) NULL,
   `phone` VARCHAR(20) NULL,
   `created_at` DATETIME NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -86,8 +83,7 @@ CREATE TABLE IF NOT EXISTS `application` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -111,8 +107,7 @@ CREATE TABLE IF NOT EXISTS `approved` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -135,8 +130,7 @@ CREATE TABLE IF NOT EXISTS `closed` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -159,8 +153,7 @@ CREATE TABLE IF NOT EXISTS `ctc` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -182,8 +175,7 @@ CREATE TABLE IF NOT EXISTS `declined` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -209,8 +201,7 @@ CREATE TABLE IF NOT EXISTS `documentation` (
     REFERENCES `user` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -233,8 +224,7 @@ CREATE TABLE IF NOT EXISTS `funded` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -260,8 +250,7 @@ CREATE TABLE IF NOT EXISTS `status` (
     REFERENCES `user` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 6
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -288,6 +277,12 @@ AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
+SET SQL_MODE = '';
+DROP USER IF EXISTS loantracker@localhost;
+SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+CREATE USER 'loantracker'@'localhost' IDENTIFIED BY 'loantracker';
+
+GRANT SELECT, INSERT, TRIGGER, UPDATE, DELETE ON TABLE * TO 'loantracker'@'localhost';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -330,6 +325,7 @@ INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `
 INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (2, 2, '123 main st', 250000, 'CONV', 'Refi', '2025-05-05', 'Underwriting', 2, 1201, 1);
 INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (3, 3, '321 Broadway', 350000, 'VA', 'Purchase', '2025-05-05', 'closing', 3, 1351, 1);
 INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (4, 4, '555 wolf street', 780000, 'Jumbo', 'Purchase', '2025-01-01', 'funding', 4, 6514, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (5, 5, 'na', 800000, 'CONV', 'Purchase', '2025-01-01', 'Declined', 5, 9876, 1);
 
 COMMIT;
 
