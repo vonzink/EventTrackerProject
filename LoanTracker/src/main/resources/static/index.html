@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<title>Loan Application Search</title>
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -10,16 +13,65 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
 	crossorigin="anonymous"></script>
-	
 <link rel="stylesheet" href="css/main.css">
-<meta charset="UTF-8">
-
-<title>index</title>
-<script type="text/javascript" src="js/script.js"></script>
 </head>
 <body>
 
-<h1>Welcome</h1>
+<div class="centered-form outer-table">
+  <ul class="nav nav-pills justify-content-center flex-wrap gap-2" style="color:#8cc63E" id="statusBar">
+    <li class="nav-item">
+      <span class="nav-link">Lead</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link">Application</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link">Documentation</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link">Underwriting</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link">Approved</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link">CTC</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link">Funded</span>
+    </li>
+  </ul>
+</div>
 
+	<br>
+	<br>
+	<!-- <div id="nav-placeholder"></div> -->
+	<div id="results" class="mt-4 spacing"></div>
+
+	<br>
+	<br>
+	<div class="container mt-4 d-flex justify-content-center gap-3">
+
+		<form id="searchForm" class="d-flex align-items-center gap-2"
+			style="max-width: 400px;">
+			<input type="text" id="searchName" class="form-control"
+				placeholder="Search" required>
+			<button type="submit" class="btn glow-btn">Search</button>
+		</form>
+
+	</div>
+
+	<div class="container mt-4 d-flex justify-content-center gap-3">
+		<button id="showAllBtn" class="btn glow-btn">Pipeline</button>
+	</div>
+
+	<div class="container mt-4 d-flex justify-content-center gap-3">
+		<a href="/app.html" class="btn glow-btn"> New Loan </a>
+	</div>
+
+	<div id="footer-placeholder"></div>
+	<script src="js/nav.js"></script>
+	<script src="js/script.js"></script>
 </body>
 </html>
+

@@ -71,10 +71,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 			 return appRepo.findBySubmittedDateBetween(start, end);
 		}
 		public List<Application> findByBorrowerName(String name) {
-			return appRepo.findByBorrowerFirstNameContainingIgnoreCase(name);
+			return appRepo.findByBorrower_LastNameContainingIgnoreCase(name);
 		}
 		public List<Application> findByBorrowerLastName(String name) {
-			 return appRepo.findByBorrowerLastNameContainingIgnoreCase(name); 
+			 return appRepo.findByBorrower_LastNameContainingIgnoreCase(name);
 		}
 		@Override
 		public List<Application> findAllEnabled() {

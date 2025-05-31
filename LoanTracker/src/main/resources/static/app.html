@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Loan Application Search</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<!-- <div id="nav-placeholder"></div> -->
+
+	<form id="loanForm" class="mb-4 form-control outer-table">
+		<h4>Loan Information</h4>
+		<div class="row">
+			<div class="col-md-6 mb-3">
+				<label for="propertyAddress" class="form-label">Property
+					Address</label> <input type="text" class="form-control"
+					id="propertyAddress" required>
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<label for="loanAmount" class="form-label">Loan Amount</label> <input
+					type="number" class="form-control" id="loanAmount" step="0.01"
+					required>
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<select id="loanType" class="form-control"></select>
+				<label for="loanType" class="form-label">Loan Type</label> 
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<select class="form-control" id="purpose"></select>
+				<label for="purpose" class="form-label">Purpose</label> 
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<label for="submittedDate" class="form-label">Date Submitted</label>
+				<input type="date" class="form-control" id="submittedDate" required>
+			</div>
+			<div class="col-md-6 mb-3">
+				<select id="status" class="form-control"></select>
+				<label for="status" class="form-label">Status</label> 
+			</div>
+		</div>
+		<div class="col-auto ">
+			<button type="submit" class="btn glow-btn">Submit</button>
+		</div>
+	</form>
+
+	<form id="borrowerForm" class="mb-4 form-control outer-table">
+		<h4>Borrower Information</h4>
+		<div class="row">
+			<div class="col-md-6 mb-3">
+				<label for="firstName" class="form-label">First Name</label> <input
+					type="text" class="form-control" id="firstName" required>
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<label for="lastName" class="form-label">Last Name</label> <input
+					type="text" class="form-control" id="lastName" required>
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<label for="email" class="form-label">Email</label> <input
+					type="email" class="form-control" id="email" required>
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<label for="phone" class="form-label">Phone</label> <input
+					type="tel" class="form-control" id="phone" required>
+			</div>
+
+		</div>
+		<div class="col-auto ">
+			<button type="submit" class="btn glow-btn">Submit</button>
+		</div>
+	</form>
+
+<div class="container text-center mt-5">
+  <a href="/index.html" class="btn glow-btn">
+    home
+  </a>
+</div>
+
+	<script src="js/app.js"></script>
+	<div id="footer-placeholder"></div>
+	<script src="js/nav.js"></script>
+	<script src="js/script.js"></script>
+</body>
+</html>
+
