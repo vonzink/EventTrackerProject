@@ -44,12 +44,20 @@ public class ApplicationController {
 	}
 
 	@PutMapping("applications/{id}")
-	public Application update(@PathVariable("id") int id, @RequestBody Application app, HttpServletResponse res) {
-		Application updated = appService.update(id, app);
-		if (updated == null) {
-			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	public Application update(@PathVariable int id, @RequestBody Application app, HttpServletResponse res) {
+		try {
+			Application updated = appService.update(id, app);
+			if (updated != null) {
+				res.setStatus(HttpServletResponse.SC_OK);
+				return updated;
+			} else {
+				res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				return null;
+			}
+		} catch (Exception e) {
+			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return null;
 		}
-		return updated;
 	}
 
 	@DeleteMapping("applications/{id}")

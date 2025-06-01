@@ -27,6 +27,8 @@ public class Application {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	@Column(name = "loan_number")
+	private Integer loanNumber;
 	@Column(name = "property_address")
 	private String propertyAddress;
 	@Column(name = "loan_amount")
@@ -63,17 +65,26 @@ public class Application {
 		super();
 	}
 
-	public Application(int id, String userId, String propertyAddress, String loanAmount, String loanType,
-			String purpose, LocalDate submittedDate, String status) {
+	public Application(int id, Integer loanNumber, String propertyAddress, String loanAmount, String loanType,
+			boolean enable, String purpose, LocalDate submittedDate, String status, Borrower borrower, User user,
+			Underwriting underwriting, List<Status> statuses) {
 		super();
 		this.id = id;
+		this.loanNumber = loanNumber;
 		this.propertyAddress = propertyAddress;
 		this.loanAmount = loanAmount;
 		this.loanType = loanType;
+		this.enable = enable;
 		this.purpose = purpose;
 		this.submittedDate = submittedDate;
 		this.status = status;
+		this.borrower = borrower;
+		this.user = user;
+		this.underwriting = underwriting;
+		this.statuses = statuses;
 	}
+
+
 
 	// getters and setters
 
@@ -171,6 +182,22 @@ public class Application {
 
 	public void setUnderwriting(Underwriting underwriting) {
 		this.underwriting = underwriting;
+	}
+	
+	public Integer getLoanNumber() {
+		return loanNumber;
+	}
+
+	public void setLoanNumber(Integer loanNumber) {
+		this.loanNumber = loanNumber;
+	}
+
+	public boolean isEnable() {
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
 	}
 
 	public void addStatus(Status status) {

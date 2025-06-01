@@ -26,7 +26,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	    public Application create(Application app) {
 	        return appRepo.save(app);
 	    }
-	    public Application update(int id, Application app) {
+	    public Application update2(int id, Application app) {
 	        if (!appRepo.existsById(id)) return null;
 	        app.setId(id);
 	        return appRepo.save(app);
@@ -38,6 +38,33 @@ public class ApplicationServiceImpl implements ApplicationService {
 	        }
 	        return false;
 	    }
+	    
+	    @Override
+	    public Application update(int id, Application app) {
+	        Application existing = appRepo.findById(id).orElse(null);
+	        if (existing == null) return null;
+
+	        existing.setPropertyAddress(app.getPropertyAddress());
+	        existing.setLoanAmount(app.getLoanAmount());
+	        existing.setLoanType(app.getLoanType());
+	        existing.setPurpose(app.getPurpose());
+	        existing.setSubmittedDate(app.getSubmittedDate());
+	        existing.setStatus(app.getStatus());
+
+	        if (app.getBorrower() != null) {
+	            if (existing.getBorrower() == null) {
+	                existing.setBorrower(app.getBorrower());
+	            } else {
+	                existing.getBorrower().setFirstName(app.getBorrower().getFirstName());
+	                existing.getBorrower().setLastName(app.getBorrower().getLastName());
+	                existing.getBorrower().setEmail(app.getBorrower().getEmail());
+	                existing.getBorrower().setPhone(app.getBorrower().getPhone());
+	            }
+	        }
+
+	        return appRepo.save(existing);
+	    }  
+	    
 	    @Override
 	    public boolean disable(int id) {
 	        Optional<Application> opt = appRepo.findById(id);
@@ -75,6 +102,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 		public List<Application> findByBorrowerLastName(String name) {
 			 return appRepo.findByBorrower_LastNameContainingIgnoreCase(name);
+		}
+		public  List<Application> findByLoanNumber(Integer loanId) {
+			return appRepo.findByLoanNumber(loanId);
 		}
 		@Override
 		public List<Application> findAllEnabled() {

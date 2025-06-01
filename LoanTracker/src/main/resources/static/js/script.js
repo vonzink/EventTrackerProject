@@ -62,7 +62,7 @@ function displayApplication(apps) {
 	let thead = document.createElement('thead');
 	let headerRow = document.createElement('tr');
 	let headers = [
-		'ID', 'Borrower', 'Property Address', 'Loan Type', 'Loan Purpose',
+		'ID','loanNumber', 'Borrower', 'Property Address', 'Loan Type', 'Loan Purpose',
 		'Loan Amount', 'Date Submitted', 'Phone', 'E-mail', 'Status'
 	];
 
@@ -81,6 +81,7 @@ function displayApplication(apps) {
 
 		let cells = [
 			app.id,
+			app.loanNumber,
 			`${app.borrower.firstName} ${app.borrower.lastName}`,
 			app.propertyAddress,
 			app.loanType,

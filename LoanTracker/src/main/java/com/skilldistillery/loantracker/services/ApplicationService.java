@@ -10,6 +10,7 @@ public interface ApplicationService {
 
 	List<Application> findAll();
     Application findById(int id);
+    List<Application> findByLoanNumber(Integer loanId);
     Application create(Application application);
     Application update(int id, Application application);
     boolean delete(int id);

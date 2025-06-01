@@ -11,7 +11,6 @@ function populateSelect(id, options) {
 	});
 }
 
-// 🔥 Set up dropdowns immediately
 const purposes = ['Purchase', 'Refi'];
 const loanTypes = ['FHA', 'Conventional', 'VA', 'USDA', 'JUMBO'];
 const statuses = ['Lead', 'Application', 'Documentation', 'Underwriting', 'Approved', 'CTC', 'Funded'];
@@ -65,6 +64,7 @@ if (appId) {
 }
 
 function populateForm(app) {
+	document.getElementById('loanNumber').value = app.loanNumber;
 	document.getElementById('propertyAddress').value = app.propertyAddress;
 	document.getElementById('loanAmount').value = app.loanAmount;
 	document.getElementById('loanType').value = app.loanType;
@@ -92,7 +92,6 @@ function updateApplication(appId, app) {
 			}
 		}
 	};
-
 	xhr.send(JSON.stringify(app));
 }
 
@@ -110,6 +109,8 @@ function addApplication(app) {
 			}
 		}
 	};
+	console.log('Sending PUT to:', `/api/applications/${appId}`);
+	console.log('Payload:', app);
 	xhr.send(JSON.stringify(app));
 }
 
