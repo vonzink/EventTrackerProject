@@ -15,6 +15,10 @@ LoanTracker is a full-stack Spring Boot application designed to manage the lifec
  - SQL Workbench
  - JPA/Hibernate
  - Gradle
+ - JavaScript
+ - Bootstrap
+ - html/CSS
+
 
  ## SQL Diagram
 
@@ -67,7 +71,7 @@ LoanTracker is a full-stack Spring Boot application designed to manage the lifec
 
  ## Lessons Learned
 
- * i need to spend more time planning out my tables and JOINS to prevent having to go back to workbench and updated every class. 
+ * I need to spend more time planning out my tables and JOINS to prevent having to go back to workbench and updated every class. 
 
   * Mapping structure in the controller is a big deal and needs to be precise. 
 
@@ -89,10 +93,16 @@ LoanTracker is a full-stack Spring Boot application designed to manage the lifec
 
    * Use a try/catch when updating body with @RequestBody
 
-
-
-
-
+   * JavaScript:
+      - Document Object Model — the browser’s tree-like, programmable representation of an HTML page that lets JavaScript read, add, remove, and modify elements, attributes, and content while the page is running.
+      - window.EventListener
+         - load - waits for everytihng to load
+      - document.querySelector
+         - returns the first element in the DOM that matches a given CSS selector.
+      - "function ()" and "() => are interchangable
+      - buildPayload(){return {}}; - standard function for getting current value of a form
+      - ?? checks for nuul and undefined (value !== null && value !== undefined) ? value : '';
+      - forEach is an easier loop option
 
  ## Notes
 *    Project is modular, separated by controller, service, repo, and entity layers.

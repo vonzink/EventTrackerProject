@@ -1,89 +1,66 @@
-// js/domManipulation.js
+
 console.log('domManipulation.js loaded');
 
-/* ------------------------------------------------------------------
-   GLOBAL STATE
--------------------------------------------------------------------*/
-let showEnabledOnly = true;                   // default view → hide disabled
+let showEnabledOnly = true;                 
 
-/* ------------------------------------------------------------------
-   BOOTSTRAP
--------------------------------------------------------------------*/
-window.addEventListener('load', () => {
+window.addEventListener('load', function () {
   console.log('DOM created');
-  wireSearchAndButtons();                     // search form + "Show All" btn
-  wireToggleLink();                           // "Show disabled / Show active"
-  loadApplications();                         // initial table paint
+  wireSearchAndButtons();                     
+  wireToggleLink();                           
+  loadApplications();                         
 });
 
-/* ------------------------------------------------------------------
-   WIRE SEARCH FORM & EXPLICIT 'SHOW ALL' BUTTON
--------------------------------------------------------------------*/
 function wireSearchAndButtons() {
-  const form = document.getElementById('searchForm');
+  let form = document.getElementById('searchForm');
   if (form) {
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
-      const name = document.getElementById('searchName').value.trim();
+      let name = document.getElementById('searchName').value.trim();
       searchByLastName(name);
     });
   }
 
-  const showAllBtn = document.getElementById('showAllBtn');
+  let showAllBtn = document.getElementById('showAllBtn');
   if (showAllBtn) {
-    showAllBtn.addEventListener('click', e => {
+    showAllBtn.addEventListener('click', function (e) {
       e.preventDefault();
-      loadApplications();                     // obeys current toggle state
+      loadApplications();                   
     });
   }
 }
 if (!app.enable) {
   row.classList.add('text-danger');
 }
-/* ------------------------------------------------------------------
-   WIRE THE SUBTLE ENABLE/DISABLE TOGGLE LINK
--------------------------------------------------------------------*/
 function wireToggleLink() {
   const link = document.getElementById('toggleEnableLink');
   if (!link) return;
 
-  link.addEventListener('click', e => {
+  link.addEventListener('click', function (e) {
     e.preventDefault();
-    showEnabledOnly = !showEnabledOnly;       // flip flag
-    link.textContent = showEnabledOnly ? 'Show disabled'
-                                       : 'Show active';
-    loadApplications();                       // repaint table
+    showEnabledOnly = !showEnabledOnly;      
+    link.textContent = showEnabledOnly ? 'Show disabled' : 'Show active';
+    loadApplications();                 
   });
 }
 
-/* ------------------------------------------------------------------
-   FETCH AND DISPLAY APPLICATIONS
--------------------------------------------------------------------*/
 function loadApplications() {
-  const url = showEnabledOnly
-    ? 'api/applications/active'               // only enabled records
-    : 'api/applications';                     // enabled + disabled
-
+  let url = showEnabledOnly
+    ? 'api/applications/active'              
+    : 'api/applications';                    
   sendRequest(url, displayApplications);
 }
 
-/* ------------------------------------------------------------------
-   SEARCH BY BORROWER LAST NAME
--------------------------------------------------------------------*/
 function searchByLastName(name) {
   if (!name) {
     alert('Enter a last name');
     return;
   }
-  const url = 'api/applications/search/name?name=' + encodeURIComponent(name);
+  let url = 'api/applications/search/name?name=' + encodeURIComponent(name);
   sendRequest(url, displayApplications);
 }
 
-/* ------------------------------------------------------------------
-   GENERIC XHR WRAPPER
--------------------------------------------------------------------*/
 function sendRequest(url, onSuccess) {
-  const xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
 
   xhr.onreadystatechange = () => {
@@ -91,18 +68,15 @@ function sendRequest(url, onSuccess) {
       if (xhr.status === 200) {
         onSuccess(JSON.parse(xhr.responseText));
       } else {
-        renderError('Request failed (' + xhr.status + ')');
+        renderError('Request failed');
       }
     }
   };
   xhr.send();
 }
 
-/* ------------------------------------------------------------------
-   RENDER TABLE
--------------------------------------------------------------------*/
 function displayApplications(apps) {
-  const resultsDiv = document.getElementById('results');
+  let resultsDiv = document.getElementById('results');
   resultsDiv.innerHTML = '';
 
   if (!Array.isArray(apps) || apps.length === 0) {
@@ -110,33 +84,32 @@ function displayApplications(apps) {
     return;
   }
 
-  const table = document.createElement('table');
+  let table = document.createElement('table');
   table.className = 'table table-bordered table-striped table-hover outer-table';
 
-  /* header */
-  const headerLabels = [
+
+  let headerLabels = [
     'ID', 'Loan #', 'Borrower', 'Property Address', 'Loan Type',
     'Loan Purpose', 'Loan Amount', 'Date Submitted', 'Phone', 'E-mail', 'Status'
   ];
-  const thead = document.createElement('thead');
-  const headerRow = document.createElement('tr');
-  headerLabels.forEach(lbl => {
-    const th = document.createElement('th');
+  let thead = document.createElement('thead');
+  let headerRow = document.createElement('tr');
+  headerLabels.forEach(function (lbl) {
+    let th = document.createElement('th');
     th.textContent = lbl;
     headerRow.appendChild(th);
   });
   thead.appendChild(headerRow);
   table.appendChild(thead);
 
-  /* body */
-  const tbody = document.createElement('tbody');
-  apps.forEach(app => {
-    const row = document.createElement('tr');
 
-    /* red text for disabled rows */
+  let tbody = document.createElement('tbody');
+  apps.forEach(function (app) {
+    let row = document.createElement('tr');
+
     if (!app.enable) row.classList.add('text-danger');
 
-    const cells = [
+    let cells = [
       app.id,
       app.loanNumber,
       app.borrower ? `${app.borrower.firstName} ${app.borrower.lastName}` : '',
@@ -150,14 +123,13 @@ function displayApplications(apps) {
       app.status
     ];
 
-    cells.forEach(text => {
-      const td = document.createElement('td');
+    cells.forEach(function (text) {
+      let td = document.createElement('td');
       td.textContent = text;
       row.appendChild(td);
     });
-
-    /* click-through to detail page */
-    row.addEventListener('click', () => {
+	
+    row.addEventListener('click', function () {
       window.location.href = `/app.html?id=${app.id}`;
     });
 
@@ -165,24 +137,22 @@ function displayApplications(apps) {
   });
   table.appendChild(tbody);
 
-  /* wrap for responsiveness */
-  const wrapper = document.createElement('div');
+  let wrapper = document.createElement('div');
   wrapper.className = 'table-responsive';
   wrapper.appendChild(table);
   resultsDiv.appendChild(wrapper);
 }
 
-/* ------------------------------------------------------------------
-   HELPER: ERROR DISPLAY
--------------------------------------------------------------------*/
-function renderError(msg) {
-  document.getElementById('results').innerHTML =
-    `<p class="text-danger">${msg}</p>`;
+function renderErrorOldSchool(msg) {
+  var resultsDiv = document.getElementById('results');
+  while (resultsDiv.firstChild) {
+    resultsDiv.removeChild(resultsDiv.firstChild);
+  }
+  var p = document.createElement('p');
+  p.className = 'text-danger';
+  p.appendChild(document.createTextNode(msg));
+  resultsDiv.appendChild(p);
 }
-
-/* ------------------------------------------------------------------
-   HELPER: STATUS BAR (UNCHANGED)
--------------------------------------------------------------------*/
 function highlightStatus(currentStatus) {
   const items = document.querySelectorAll('#statusBar .nav-link');
   items.forEach(item => {
