@@ -42,7 +42,8 @@ public class Application {
 	private LocalDate submittedDate;
 	private String status;
 
-	@ManyToOne
+	
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "borrower_id")
 	private Borrower borrower;
 

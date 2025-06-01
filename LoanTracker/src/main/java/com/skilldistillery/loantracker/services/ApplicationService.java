@@ -13,7 +13,6 @@ public interface ApplicationService {
     List<Application> findByLoanNumber(Integer loanId);
     Application create(Application application);
     Application update(int id, Application application);
-    boolean delete(int id);
     boolean disable(int id);
     boolean enable(int id);
     List<Application> findAllEnabled();
@@ -23,5 +22,6 @@ public interface ApplicationService {
     List<Application> findByStatus(String status);
     List<Application> findBySubmittedDateRange(LocalDate start, LocalDate end);
 	List<Application> findByBorrowerLastName(String name);
+	boolean delete(int id);
 }
 

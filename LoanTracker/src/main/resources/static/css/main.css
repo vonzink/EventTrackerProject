@@ -12,6 +12,8 @@ body {
 	text-decoration: none;
 }
 
+.text-danger { color: #dc3545; } 
+
 .centered-form {
 	display: flex;
 	justify-content: space-evenly;

@@ -1,126 +1,135 @@
-console.log('donManipulation.js loaded');
+// js/app.js
+console.log('app.js loaded');
 
-function populateSelect(id, options) {
-	const select = document.getElementById(id);
-	select.innerHTML = '';
-	options.forEach(option => {
-		const opt = document.createElement('option');
-		opt.value = option;
-		opt.textContent = option;
-		select.appendChild(opt);
-	});
+window.addEventListener('load', initForm);
+
+function initForm() {
+  const params = new URLSearchParams(window.location.search);
+  const appId  = params.get('id');
+
+  const saveBtn   = qs('#formActionBtn');
+  const updateBtn = qs('#updateBtn');
+  const enableSw  = qs('#enableSwitch');
+
+  /* mode switch ------------------------------------------------ */
+  if (appId) {                          // --- edit mode ---
+    saveBtn.classList.add('d-none');
+    updateBtn.classList.remove('d-none');
+    loadApplication(appId);
+  } else {                              // --- create mode ---
+    saveBtn.classList.remove('d-none');
+    updateBtn.classList.add('d-none');
+  }
+
+  /* form submit ------------------------------------------------ */
+  qs('#loanAppForm').addEventListener('submit', e => {
+    e.preventDefault();
+    appId ? updateApplication(appId) : addApplication();
+  });
+
+  /* static select options ------------------------------------- */
+  fillSelect('#loanType', ['FHA', 'VA', 'Conventional', 'USDA']);
+  fillSelect('#purpose',  ['Purchase', 'Refi', 'Cash-Out']);
+  fillSelect('#status',   ['Submitted', 'Processing', 'Approved',
+                           'CTC', 'Docs Out', 'Funded']);
 }
 
-const purposes = ['Purchase', 'Refi'];
-const loanTypes = ['FHA', 'Conventional', 'VA', 'USDA', 'JUMBO'];
-const statuses = ['Lead', 'Application', 'Documentation', 'Underwriting', 'Approved', 'CTC', 'Funded'];
+/* -------- READ one record ------------------------------------ */
+function loadApplication(id) {
+  send('GET', `api/applications/${id}`, null, app => {
+    set('#loanNumber'     , app.loanNumber);
+    set('#propertyAddress', app.propertyAddress);
+    set('#loanAmount'     , app.loanAmount);
+    set('#loanType'       , app.loanType);
+    set('#purpose'        , app.purpose);
+    set('#submittedDate'  , app.submittedDate);
+    set('#status'         , app.status);
 
-window.addEventListener('load', function () {
-	console.log('DOM created');
+    const sw = qs('#enableSwitch');
+    if (sw) sw.checked = !!app.enable;
 
-	populateSelect('purpose', purposes);
-	populateSelect('loanType', loanTypes);
-	populateSelect('status', statuses);
-
-	init();
-});
-
-function init() {
-	console.log('in init()');
-
-	document.getElementById('saveBtn').addEventListener('click', function (e) {
-		e.preventDefault();
-		const appData = collectFormData();
-		const appId = getQueryParam('id');
-
-		if (appId) {
-			updateApplication(appId, appData);
-		} else {
-			addApplication(appData);
-		}
-	});
+    if (app.borrower) {
+      set('#firstName' , app.borrower.firstName);
+      set('#lastName'  , app.borrower.lastName);
+      set('#email'     , app.borrower.email);
+      set('#phone'     , app.borrower.phone);
+      set('#borrowerId', app.borrower.id);        // NEW line
+    }
+  });
 }
 
-function getQueryParam(name) {
-	return new URLSearchParams(window.location.search).get(name);
+/* -------- CREATE --------------------------------------------- */
+function addApplication() {
+  send('POST', 'api/applications', buildPayload(), created => {
+	toast('Application created ✓');
+    window.location.href = `/app.html?id=${created.id}`;
+  });
 }
 
-const appId = getQueryParam('id');
-
-if (appId) {
-	const xhr = new XMLHttpRequest();
-	xhr.open('GET', `/api/applications/${appId}`, true);
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState === 4) {
-			if (xhr.status === 200) {
-				const app = JSON.parse(xhr.responseText);
-				populateForm(app);
-			} else {
-				alert('Failed to load application.');
-			}
-		}
-	};
-	xhr.send();
+/* -------- UPDATE --------------------------------------------- */
+function updateApplication(id) {
+  send('PUT', `api/applications/${id}`, buildPayload(), () => {
+toast('Application updated ✓');
+    loadApplication(id);
+  });
 }
 
-function populateForm(app) {
-	document.getElementById('loanNumber').value = app.loanNumber;
-	document.getElementById('propertyAddress').value = app.propertyAddress;
-	document.getElementById('loanAmount').value = app.loanAmount;
-	document.getElementById('loanType').value = app.loanType;
-	document.getElementById('purpose').value = app.purpose;
-	document.getElementById('submittedDate').value = app.submittedDate;
-	document.getElementById('status').value = app.status;
-
-	// borrower
-	document.getElementById('firstName').value = app.borrower.firstName;
-	document.getElementById('lastName').value = app.borrower.lastName;
-	document.getElementById('email').value = app.borrower.email;
-	document.getElementById('phone').value = app.borrower.phone;
+/* -------- helpers -------------------------------------------- */
+function buildPayload() {
+  return {
+    loanNumber      : get('#loanNumber'),
+    propertyAddress : get('#propertyAddress'),
+    loanAmount      : Number(get('#loanAmount')),
+    loanType        : get('#loanType'),
+    purpose         : get('#purpose'),
+    submittedDate   : get('#submittedDate'),
+    status          : get('#status'),
+    enable          : qs('#enableSwitch') ? qs('#enableSwitch').checked : true,
+    borrower: {
+      firstName : get('#firstName'),
+      lastName  : get('#lastName'),
+      email     : get('#email'),
+      phone     : get('#phone')
+    }
+  };
 }
 
-function updateApplication(appId, app) {
-	const xhr = new XMLHttpRequest();
-	xhr.open('PUT', `/api/applications/${appId}`);
-	xhr.setRequestHeader('Content-type', 'application/json');
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState === xhr.DONE) {
-			if (xhr.status === 200) {
-				alert('Application updated successfully!');
-			} else {
-				alert('Failed to update application.');
-			}
-		}
-	};
-	xhr.send(JSON.stringify(app));
+function toast(msg) {
+  qs('#toastMsg').textContent = msg;
+  const t = new bootstrap.Toast(qs('#toastBox'), { delay: 1800 });
+  t.show();
 }
 
-function addApplication(app) {
-	const xhr = new XMLHttpRequest();
-	xhr.open('POST', '/api/applications');
-	xhr.setRequestHeader('Content-type', 'application/json');
-
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState === xhr.DONE) {
-			if (xhr.status === 201 || xhr.status === 200) {
-				alert('Application created successfully!');
-			} else {
-				alert('Failed to create application.');
-			}
-		}
-	};
-	console.log('Sending PUT to:', `/api/applications/${appId}`);
-	console.log('Payload:', app);
-	xhr.send(JSON.stringify(app));
+function send(method, url, body, ok) {
+  const xhr = new XMLHttpRequest();
+  xhr.open(method, url, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState !== XMLHttpRequest.DONE) return;
+    if (xhr.status >= 200 && xhr.status < 300) {
+      ok(xhr.responseText ? JSON.parse(xhr.responseText) : null);
+    } else {
+      console.error(`${method} ${url} → ${xhr.status}`);
+      alert('Request failed (' + xhr.status + ')');
+    }
+  };
+  xhr.send(body ? JSON.stringify(body) : null);
 }
 
+/* DOM utils ---------------------------------------------------- */
+const qs  = sel => document.querySelector(sel);
+const set = (sel, val) => qs(sel) && (qs(sel).value = val ?? '');
+const get = sel => (qs(sel) ? qs(sel).value.trim() : '');
 
-
-
-
-
-
-
+function fillSelect(selector, options) {
+  const sel = qs(selector);
+  if (!sel || sel.options.length) return;
+  options.forEach(opt => {
+    const o = document.createElement('option');
+    o.text = o.value = opt;
+    sel.add(o);
+  });
+}
 
 
 

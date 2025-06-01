@@ -15,7 +15,14 @@
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
+<p class="mb-2">
+  Loan Applications
+  <a href="#" id="toggleEnableLink" class="small ms-3 link-secondary">
+    Show disabled
+  </a>
+</p>
 
 <div class="centered-form outer-table">
   <ul class="nav nav-pills justify-content-center flex-wrap gap-2" style="color:#8cc63E" id="statusBar">
@@ -61,17 +68,19 @@
 
 	</div>
 
-	<div class="container mt-4 d-flex justify-content-center gap-3">
-		<button id="showAllBtn" class="btn glow-btn">Pipeline</button>
-	</div>
 
 	<div class="container mt-4 d-flex justify-content-center gap-3">
 		<a href="/app.html" class="btn glow-btn"> New Loan </a>
 	</div>
 
-	<div id="footer-placeholder"></div>
-	<script src="js/nav.js"></script>
-	<script src="js/script.js"></script>
+
+<div id="footer-placeholder"></div>
+
+<!-- All scripts go here -->
+<script src="js/app.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/script.js" defer></script>
+</body>
 </body>
 </html>
 

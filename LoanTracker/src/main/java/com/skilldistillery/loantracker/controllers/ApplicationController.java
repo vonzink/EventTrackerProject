@@ -18,19 +18,6 @@ public class ApplicationController {
 	@Autowired
 	private ApplicationService appService;
 
-	@GetMapping({ "applications", "applications/" })
-	public List<Application> index() {
-		return appService.findAll();
-	}
-
-	@GetMapping("applications/{id}")
-	public Application findById(@PathVariable("id") int id, HttpServletResponse res) {
-		Application app = appService.findById(id);
-		if (app == null) {
-			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
-		return app;
-	}
 	@PostMapping("applications")
 	public Application create(@RequestBody Application app, HttpServletResponse res) {
 		try {
@@ -44,7 +31,7 @@ public class ApplicationController {
 	}
 
 	@PutMapping("applications/{id}")
-	public Application update(@PathVariable int id, @RequestBody Application app, HttpServletResponse res) {
+	public Application update(@PathVariable("id") int id, @RequestBody Application app, HttpServletResponse res) {
 		try {
 			Application updated = appService.update(id, app);
 			if (updated != null) {
@@ -59,29 +46,33 @@ public class ApplicationController {
 			return null;
 		}
 	}
-
-	@DeleteMapping("applications/{id}")
-	public void delete(@PathVariable("id") int id, HttpServletResponse res) {
-		if (appService.delete(id)) {
-			res.setStatus(HttpServletResponse.SC_NO_CONTENT);
-		} else {
-			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
-	}
 	@PutMapping("applications/{id}/disable")
 	public boolean disableApplication(@PathVariable("id") int id) {
-	    return appService.disable(id);
+		return appService.disable(id);
 	}
-
 	@PutMapping("applications/{id}/enable")
 	public boolean enableApplication(@PathVariable("id") int id) {
-	    return appService.enable(id);
+		return appService.enable(id);
+	}
+	
+	
+	@GetMapping({ "applications", "applications/" })
+	public List<Application> index() {
+		return appService.findAll();
+	}
+	
+	@GetMapping("applications/{id}")
+	public Application findById(@PathVariable("id") int id, HttpServletResponse res) {
+		Application app = appService.findById(id);
+		if (app == null) {
+			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+		return app;
 	}
 	@GetMapping("applications/active")
 	public List<Application> getEnabledApplications() {
 	    return appService.findAllEnabled();
 	}
-
 	@GetMapping("applications/search/name")
 	public List<Application> findByName(@RequestParam("name") String name, HttpServletResponse res) {
 		if (name == null || name.trim().isEmpty()) {
@@ -90,12 +81,10 @@ public class ApplicationController {
 		}
 		return appService.findByBorrowerLastName(name);
 	}
-
 	@GetMapping("applications/search/address")
 	public List<Application> findByAddress(@RequestParam("address") String address) {
 		return appService.findByPropertyAddress(address);
 	}
-
 	@GetMapping("applications/search/status")
 	public List<Application> findByStatus(@RequestParam("status") String status) {
 		return appService.findByStatus(status);
@@ -105,5 +94,13 @@ public class ApplicationController {
 			@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
 			@RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
 		return appService.findBySubmittedDateRange(start, end);
+	}
+	@DeleteMapping("applications/{id}")
+	public void delete(@PathVariable("id") int id, HttpServletResponse res) {
+	    if (appService.delete(id)) {
+	        res.setStatus(HttpServletResponse.SC_NO_CONTENT);
+	    } else {
+	        res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	    }
 	}
 }
