@@ -36,8 +36,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public Application update(int id, Application app) {
 	    Application existing = appRepo.findById(id).orElse(null);
 	    if (existing == null) return null;
-
-	    /* -------- simple scalars -------- */
 	    if (app.getLoanNumber() != null && !app.getLoanNumber().toString().isBlank()) {
 	        existing.setLoanNumber(app.getLoanNumber());
 	    }
@@ -47,15 +45,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	    if (app.getPurpose()         != null) existing.setPurpose(app.getPurpose());
 	    if (app.getSubmittedDate()   != null) existing.setSubmittedDate(app.getSubmittedDate());
 	    if (app.getStatus()          != null) existing.setStatus(app.getStatus());
-
-	    /* -------- enable flag (NEW) -------- */
-	    // If the field is a primitive boolean:
 	    existing.setEnable(app.isEnable());
-
-	    // If you changed it to a Boolean object and want the same null-guard style:
-	    // if (app.getEnable() != null) existing.setEnable(app.getEnable());
-
-	    /* -------- borrower -------- */
 	    if (app.getBorrower() != null) {
 	        if (existing.getBorrower() == null
 	                || existing.getBorrower().getId() != app.getBorrower().getId()) {
