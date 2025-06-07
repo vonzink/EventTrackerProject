@@ -1,0 +1,162 @@
+<div class="container-fluid mt-4">
+  <!-- Toggle enabled/disabled link -->
+  <p class="mb-2">
+    <a
+      href="#"
+      (click)="toggleEnabledFilter(); $event.preventDefault()"
+      class="small ms-3 link-secondary"
+      >
+      {{ showEnabledOnly ? 'Show disabled' : 'Show active' }}
+    </a>
+  </p>
+  <br/><br/>
+
+  <!-- Search Form -->
+  <div class="container mt-4 d-flex justify-content-center gap-3">
+  <form (ngSubmit)="performSearch()" class="d-flex align-items-center gap-2" style="max-width: 800px">
+    <!-- General text input -->
+    @if (searchType !== 'dateRange' && searchType !== 'loanNumber') { <input type="text" [(ngModel)]="searchValue" name="searchValue" class="form-control" placeholder="Search" required/>}
+    <!-- Loan number input -->
+    @if (searchType === 'loanNumber') {<input type="text" [(ngModel)]="searchValue" name="loanNumber" class="form-control" placeholder="Loan Number" required/>}
+    <!-- Date range inputs -->
+    @if (searchType === 'dateRange') {<input type="date" [(ngModel)]="dateFrom" name="dateFrom" class="form-control" required/>
+      <span>&mdash;</span>
+      <input type="date" [(ngModel)]="dateTo" name="dateTo" class="form-control" required/>
+    }
+
+    <!-- Buttons -->
+    <button type="submit" class="btn glow-btn">Search</button>
+    <button
+  type="button"
+  class="btn btn-secondary ms-2 glow-btn" style=" background-color: rgb(6, 199, 6)"
+  (click)="toggleTable()"
+>
+  {{ showTable ? 'Hide' : 'Show' }}
+</button>
+</form>
+</div>
+
+<!-- Dropdown menu -->
+<div class="container mt-2 w-100 d-flex justify-content-center" style="max-width: 300px">
+<select [(ngModel)]="searchType" name="searchType" class="form-select" style="font-size:10px">
+  @for (option of searchOptions; track option.value) {
+    <option [value]="option.value">
+      {{ option.label }}
+    </option>
+  }
+</select>
+</div>
+
+<!-- Results Table Area -->
+<div id="results" class="mt-4 spacing">
+  <!-- Loading spinner -->
+  @if (loading) {
+    <div class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  }
+
+    <!-- Error message -->
+    @if (error) {
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+    }
+
+    <!-- Applications table -->
+    @if (!loading && !error && showTable) {
+      <div class="table-responsive">
+        <table
+          class="table table-bordered table-striped table-hover outer-table table-custom-size"
+        >
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Loan #</th>
+              <th>Borrower</th>
+              <th>Property Address</th>
+              <th>Loan Type</th>
+              <th>Loan Purpose</th>
+              <th>Loan Amount</th>
+              <th>Date Submitted</th>
+              <th>Phone</th>
+              <th>E-mail</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (app of applications; track app.id) {
+              <tr
+                [class.text-danger]="!app.enable"
+                (click)="viewApplication(app)"
+                style="cursor: pointer"
+              >
+                <td>{{ app.id }}</td>
+                <td>{{ app.loanNumber }}</td>
+                <td>{{ app.borrower?.firstName }} {{ app.borrower?.lastName }}</td>
+                <td>{{ app.propertyAddress }}</td>
+                <td>{{ app.loanType }}</td>
+                <td>{{ app.purpose }}</td>
+                <td>${{ app.loanAmount | number:'1.0-0' }}</td>
+                <td>{{ app.submittedDate | date:'short' }}</td>
+                <td>{{ app.borrower?.phone }}</td>
+                <td>{{ app.borrower?.email }}</td>
+                <td>{{ app.status }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (applications.length === 0) {
+        <div class="text-center text-muted py-4">
+          <p>No applications found</p>
+        </div>
+      }
+
+      @if (selectedApp) {
+        <div class="card mt-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Loan Application Details</span>
+            <button
+              class="btn btn-sm btn-outline-secondary glow-btn" style="background-color: rgb(46, 146, 124)"
+              (click)="selectedApp = null"
+            >
+              Close
+            </button>
+          </div>
+          <div class="card-body">
+            <p><strong>ID:</strong> {{ selectedApp.id }}</p>
+            <p><strong>Loan #:</strong> {{ selectedApp.loanNumber }}</p>
+            <p>
+              <strong>Borrower:</strong> {{ selectedApp.borrower?.firstName }} {{ selectedApp.borrower?.lastName }}
+            </p>
+            <p>
+              <strong>Property Address:</strong> {{ selectedApp.propertyAddress }}
+            </p>
+            <p><strong>Loan Type:</strong> {{ selectedApp.loanType }}</p>
+            <p><strong>Loan Purpose:</strong> {{ selectedApp.purpose }}</p>
+            <p>
+              <strong>Loan Amount:</strong> ${{ selectedApp.loanAmount | number:'1.0-0' }}
+            </p>
+            <p>
+              <strong>Date Submitted:</strong> {{ selectedApp.submittedDate | date:'short' }}
+            </p>
+            <p><strong>Status:</strong> {{ selectedApp.status }}</p>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <br /><br />
+
+  <!-- New Loan Button -->
+  <div class="container mt-4 d-flex justify-content-center gap-3">
+    <button class="btn glow-btn" (click)="createNewLoan()">New Loan</button>
+  </div>
+</div>
+<br>
+
