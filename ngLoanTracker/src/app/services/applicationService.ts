@@ -17,7 +17,7 @@ export class ApplicationService {
     return this.http.get<Application[]>(this.url).pipe(
       catchError((err: any) => {
         console.log(err);
-        return throwError(() => new Error("ApplicationService.index: error retrieving applications: " + err.message));
+        return throwError(() => new Error("❌ error retrieving applications: " + err.message));
       })
     );
   }
@@ -26,7 +26,7 @@ export class ApplicationService {
     return this.http.get<Application[]>(`${this.url}/active`).pipe(
       catchError((err: any) => {
         console.log(err);
-        return throwError(() => new Error("ApplicationService.getActive: error retrieving active applications: " + err.message));
+        return throwError(() => new Error("❌error retrieving active applications: " + err.message));
       })
     );
   }
@@ -36,7 +36,7 @@ export class ApplicationService {
     return this.http.get<Application[]>(`${this.url}/search/name`, { params }).pipe(
       catchError((err: any) => {
         console.log(err);
-        return throwError(() => new Error("ApplicationService.searchByName: error searching by name: " + err.message));
+        return throwError(() => new Error("❌ error searching by name: " + err.message));
       })
     );
   }
@@ -46,7 +46,7 @@ export class ApplicationService {
     return this.http.get<Application[]>(`${this.url}/search/address`, { params }).pipe(
       catchError((err: any) => {
         console.log(err);
-        return throwError(() => new Error("ApplicationService.searchByAddress: error searching by address: " + err.message));
+        return throwError(() => new Error("❌ error searching by address: " + err.message));
       })
     );
   }
@@ -57,7 +57,7 @@ searchByDateRange(from: string, to: string): Observable<Application[]> {
   return this.http.get<Application[]>(`${this.url}/search/date`, { params }).pipe(
     catchError((err: any) => {
       console.log(err);
-      return throwError(() => new Error("ApplicationService.searchByDateRange: error searching by date: " + err.message));
+      return throwError(() => new Error("❌ error searching by date: " + err.message));
     })
   );
 }
@@ -67,7 +67,7 @@ searchByLoanNumber(loanNumber: string): Observable<Application[]> {
   return this.http.get<Application[]>(`${this.url}/search/loanNumber`, { params }).pipe(
     catchError((err: any) => {
       console.log(err);
-      return throwError(() => new Error("ApplicationService.searchByLoanNumber: error searching by loan number: " + err.message));
+      return throwError(() => new Error("❌ error searching by loan number: " + err.message));
     })
   );
 }
@@ -77,9 +77,20 @@ searchByLoanNumber(loanNumber: string): Observable<Application[]> {
     return this.http.get<Application[]>(`${this.url}/search/status`, { params }).pipe(
       catchError((err: any) => {
         console.log(err);
-        return throwError(() => new Error("ApplicationService.searchByStatus: error searching by status: " + err.message));
+        return throwError(() => new Error("❌ error searching by status: " + err.message));
       })
     );
   }
+   // Existing create method:
+  newLoan(app: Application): Observable<Application> {
+  return this.http.post<Application>(this.url, app);
+}
+
+updateLoan(app: Application): Observable<Application> {
+  return this.http.put<Application>(`${this.url}/${app.id}`, app);
+}
+deleteLoan(id: number): Observable<void> {
+  return this.http.delete<void>(`${this.url}/${id}`);
+}
 }
 

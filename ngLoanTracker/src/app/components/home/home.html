@@ -1,3 +1,4 @@
+<!-- File: src/app/components/home/home.html -->
 <div class="container-fluid mt-4">
   <!-- Toggle enabled/disabled link -->
   <p class="mb-2">
@@ -5,72 +6,68 @@
       href="#"
       (click)="toggleEnabledFilter(); $event.preventDefault()"
       class="small ms-3 link-secondary"
-      >
+    >
       {{ showEnabledOnly ? 'Show disabled' : 'Show active' }}
     </a>
   </p>
-  <br/><br/>
+  <br /><br />
 
   <!-- Search Form -->
   <div class="container mt-4 d-flex justify-content-center gap-3">
-  <form (ngSubmit)="performSearch()" class="d-flex align-items-center gap-2" style="max-width: 800px">
-    <!-- General text input -->
-    @if (searchType !== 'dateRange' && searchType !== 'loanNumber') { <input type="text" [(ngModel)]="searchValue" name="searchValue" class="form-control" placeholder="Search" required/>}
-    <!-- Loan number input -->
-    @if (searchType === 'loanNumber') {<input type="text" [(ngModel)]="searchValue" name="loanNumber" class="form-control" placeholder="Loan Number" required/>}
-    <!-- Date range inputs -->
-    @if (searchType === 'dateRange') {<input type="date" [(ngModel)]="dateFrom" name="dateFrom" class="form-control" required/>
-      <span>&mdash;</span>
-      <input type="date" [(ngModel)]="dateTo" name="dateTo" class="form-control" required/>
+    <form (ngSubmit)="performSearch()" class="d-flex align-items-center gap-2" style="max-width: 800px">
+      @if (searchType !== 'dateRange' && searchType !== 'loanNumber') {
+        <input type="text" [(ngModel)]="searchValue" name="searchValue" class="form-control" placeholder="Search" required />
+      }
+      @if (searchType === 'loanNumber') {
+        <input type="text" [(ngModel)]="searchValue" name="loanNumber" class="form-control" placeholder="Loan Number" required />
+      }
+      @if (searchType === 'dateRange') {
+        <input type="date" [(ngModel)]="dateFrom" name="dateFrom" class="form-control" required />
+        <span>&mdash;</span>
+        <input type="date" [(ngModel)]="dateTo" name="dateTo" class="form-control" required />
+      }
+      <button type="submit" class="btn glow-btn">Search</button>
+      <button
+        type="button"
+        class="btn btn-secondary ms-2 glow-btn"
+        style="background-color: rgb(6, 199, 6)"
+        (click)="toggleTable()"
+      >
+        {{ showTable ? 'Hide' : 'Show' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Dropdown menu -->
+  <div class="container mt-2 w-100 d-flex justify-content-center" style="max-width: 300px">
+    <select [(ngModel)]="searchType" name="searchType" class="form-select" style="font-size:10px">
+      @for (option of searchOptions; track option.value) {
+        <option [value]="option.value">
+          {{ option.label }}
+        </option>
+      }
+    </select>
+  </div>
+
+  <!-- Results Table Area -->
+  <div id="results" class="mt-4 spacing">
+    @if (loading) {
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
     }
 
-    <!-- Buttons -->
-    <button type="submit" class="btn glow-btn">Search</button>
-    <button
-  type="button"
-  class="btn btn-secondary ms-2 glow-btn" style=" background-color: rgb(6, 199, 6)"
-  (click)="toggleTable()"
->
-  {{ showTable ? 'Hide' : 'Show' }}
-</button>
-</form>
-</div>
-
-<!-- Dropdown menu -->
-<div class="container mt-2 w-100 d-flex justify-content-center" style="max-width: 300px">
-<select [(ngModel)]="searchType" name="searchType" class="form-select" style="font-size:10px">
-  @for (option of searchOptions; track option.value) {
-    <option [value]="option.value">
-      {{ option.label }}
-    </option>
-  }
-</select>
-</div>
-
-<!-- Results Table Area -->
-<div id="results" class="mt-4 spacing">
-  <!-- Loading spinner -->
-  @if (loading) {
-    <div class="text-center">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  }
-
-    <!-- Error message -->
     @if (error) {
       <div class="alert alert-danger" role="alert">
         {{ error }}
       </div>
     }
 
-    <!-- Applications table -->
     @if (!loading && !error && showTable) {
       <div class="table-responsive">
-        <table
-          class="table table-bordered table-striped table-hover outer-table table-custom-size"
-        >
+        <table class="table table-striped table-hover outer-table table-custom-size table-bordered">
           <thead>
             <tr>
               <th>ID</th>
@@ -84,6 +81,7 @@
               <th>Phone</th>
               <th>E-mail</th>
               <th>Status</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -104,54 +102,128 @@
                 <td>{{ app.borrower?.phone }}</td>
                 <td>{{ app.borrower?.email }}</td>
                 <td>{{ app.status }}</td>
+                <td>
+                </td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="12" class="text-center text-muted py-4">
+                  No applications found
+                </td>
               </tr>
             }
           </tbody>
         </table>
       </div>
+    }
 
-      @if (applications.length === 0) {
-        <div class="text-center text-muted py-4">
-          <p>No applications found</p>
+    <!-- Loan Application Details / Edit/Create Form -->
+    @if (selectedApp) {
+      <div class="card mt-3 outer-table spacing">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>Loan Application Details</span>
+          <button
+            class="btn btn-sm btn-outline-secondary glow-btn"
+            style="background-color: rgb(46, 146, 124)"
+            (click)="cancelEdit()"
+          >
+            Close
+          </button>
         </div>
-      }
-
-      @if (selectedApp) {
-        <div class="card mt-3">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Loan Application Details</span>
-            <button
-              class="btn btn-sm btn-outline-secondary glow-btn" style="background-color: rgb(46, 146, 124)"
-              (click)="selectedApp = null"
-            >
-              Close
-            </button>
-          </div>
-          <div class="card-body">
+        <div class="card-body">
+          @if (isEditing) {
+            <form (ngSubmit)="saveApplication()">
+              <div class="mb-2">
+                <label>Loan #:</label>
+                <input class="form-control" [(ngModel)]="selectedApp.loanNumber" name="loanNumber" required />
+              </div>
+              <div class="mb-2">
+                <label>Borrower First Name:</label>
+                <input class="form-control" [(ngModel)]="selectedApp.borrower.firstName" name="borrowerFirstName" required />
+              </div>
+              <div class="mb-2">
+                <label>Borrower Last Name:</label>
+                <input class="form-control" [(ngModel)]="selectedApp.borrower.lastName" name="borrowerLastName" required />
+              </div>
+              <div class="mb-2">
+                <label>Email:</label>
+                <input type="email" class="form-control" [(ngModel)]="selectedApp.borrower.email" name="borrowerEmail" />
+              </div>
+              <div class="mb-2">
+                <label>Phone:</label>
+                <input type="tel" class="form-control" [(ngModel)]="selectedApp.borrower.phone" name="borrowerPhone" />
+              </div>
+              <div class="mb-2">
+                <label>Property Address:</label>
+                <input class="form-control" [(ngModel)]="selectedApp.propertyAddress" name="propertyAddress" />
+              </div>
+              <div class="mb-2">
+                <label>Loan Type:</label>
+                <select class="form-control" [(ngModel)]="selectedApp.loanType" name="loanType">
+                  <option value="">Select Type</option>
+                  <option value="Conventional">Conventional</option>
+                  <option value="FHA">FHA</option>
+                  <option value="VA">VA</option>
+                  <option value="USDA">USDA</option>
+                  <option value="Jumbo">Jumbo</option>
+                </select>
+              </div>
+              <div class="mb-2">
+                <label>Purpose:</label>
+                <select class="form-control" [(ngModel)]="selectedApp.purpose" name="purpose">
+                  <option value="">Select Purpose</option>
+                  <option value="Purchase">Purchase</option>
+                  <option value="Refinance">Refinance</option>
+                  <option value="Cash-Out Refinance">Cash-Out Refinance</option>
+                </select>
+              </div>
+              <div class="mb-2">
+                <label>Loan Amount:</label>
+                <input type="text" class="form-control" [(ngModel)]="selectedApp.loanAmount" name="loanAmount" />
+              </div>
+              <div class="mb-2">
+                <label>Status:</label>
+                <select class="form-control" [(ngModel)]="selectedApp.status" name="status">
+                  <option value="">Select Status</option>
+                  <option value="Submitted">Submitted</option>
+                  <option value="In Review">In Review</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Denied">Denied</option>
+                  <option value="Withdrawn">Withdrawn</option>
+                </select>
+              </div>
+              <div class="mb-2">
+                <label>Active:</label>
+                <input type="checkbox" [(ngModel)]="selectedApp.enable" name="enable" class="form-check-input ms-2" />
+              </div>
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="submit" class="btn glow-btn">Save</button>
+              </div>
+            </form>
+          } @else {
             <p><strong>ID:</strong> {{ selectedApp.id }}</p>
             <p><strong>Loan #:</strong> {{ selectedApp.loanNumber }}</p>
-            <p>
-              <strong>Borrower:</strong> {{ selectedApp.borrower?.firstName }} {{ selectedApp.borrower?.lastName }}
-            </p>
-            <p>
-              <strong>Property Address:</strong> {{ selectedApp.propertyAddress }}
-            </p>
+            <p><strong>Borrower:</strong> {{ selectedApp.borrower?.firstName }} {{ selectedApp.borrower?.lastName }}</p>
+            <p><strong>Email:</strong> {{ selectedApp.borrower?.email }}</p>
+            <p><strong>Phone:</strong> {{ selectedApp.borrower?.phone }}</p>
+            <p><strong>Property Address:</strong> {{ selectedApp.propertyAddress }}</p>
             <p><strong>Loan Type:</strong> {{ selectedApp.loanType }}</p>
             <p><strong>Loan Purpose:</strong> {{ selectedApp.purpose }}</p>
-            <p>
-              <strong>Loan Amount:</strong> ${{ selectedApp.loanAmount | number:'1.0-0' }}
-            </p>
-            <p>
-              <strong>Date Submitted:</strong> {{ selectedApp.submittedDate | date:'short' }}
-            </p>
+            <p><strong>Loan Amount:</strong> ${{ selectedApp.loanAmount | number:'1.0-0' }}</p>
             <p><strong>Status:</strong> {{ selectedApp.status }}</p>
-          </div>
+            <p><strong>Active:</strong> {{ selectedApp.enable ? 'Yes' : 'No' }}</p>
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-primary glow-btn" (click)="isEditing = true">Edit</button>
+              @if (selectedApp.id && selectedApp.id !== 0) {
+                <button class="btn btn-danger glow-btn" (click)="deleteApplication()">Delete</button>
+              }
+            </div>
+          }
         </div>
-      }
+      </div>
     }
   </div>
-
-  <br /><br />
 
   <!-- New Loan Button -->
   <div class="container mt-4 d-flex justify-content-center gap-3">
@@ -159,4 +231,3 @@
   </div>
 </div>
 <br>
-

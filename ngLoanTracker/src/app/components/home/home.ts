@@ -3,6 +3,7 @@ import { Application } from './../../models/application';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApplicationService } from '../../services/applicationService';
+import { Underwriting } from '../../models/underwriting';
 
 @Component({
   selector: 'app-home',
@@ -20,19 +21,21 @@ export class Home implements OnInit {
   searchValue: string = '';
   showEnabledOnly: boolean = true;
   showTable = true;
+  selectedApp: Application | null = null;
+  isEditing: boolean = false;
 
   // Search options
   searchOptions = [
-  { value: 'name', label: 'Borrower Last Name' },
-  { value: 'address', label: 'Property Address' },
-  { value: 'status', label: 'Application Status' },
-  { value: 'dateRange', label: 'Submitted Date Range' },
-  { value: 'loanNumber', label: 'Loan Number' }
-];
+    { value: 'name', label: 'Borrower Last Name' },
+    { value: 'address', label: 'Property Address' },
+    { value: 'status', label: 'Application Status' },
+    { value: 'dateRange', label: 'Submitted Date Range' },
+    { value: 'loanNumber', label: 'Loan Number' }
+  ];
 
-// Add state for date range fields
-dateFrom: string = '';
-dateTo: string = '';
+  // Add state for date range fields
+  dateFrom: string = '';
+  dateTo: string = '';
 
   constructor(private applicationService: ApplicationService) {}
 
@@ -51,6 +54,8 @@ dateTo: string = '';
     serviceCall.subscribe({
       next: (data: Application[]) => {
         this.applications = data;
+        console.log('Loaded applications:', data);
+        console.log('Application IDs:', data.map(app => app.id));
         this.loading = false;
       },
       error: (err: any) => {
@@ -60,11 +65,17 @@ dateTo: string = '';
       }
     });
   }
-selectedApp: Application | null = null;
 
-viewApplication(app: Application): void {
-  this.selectedApp = app;
-}
+  editApplication(app: Application) {
+    // Deep copy to avoid mutating table data until save
+    this.selectedApp = JSON.parse(JSON.stringify(app));
+    this.isEditing = true;
+  }
+
+  viewApplication(app: Application): void {
+    this.selectedApp = app;
+    this.isEditing = false;
+  }
 
   performSearch(): void {
     if (!this.searchValue.trim()) {
@@ -86,6 +97,9 @@ viewApplication(app: Application): void {
         break;
       case 'status':
         searchObservable = this.applicationService.searchByStatus(this.searchValue);
+        break;
+      case 'loanNumber':
+        searchObservable = this.applicationService.searchByLoanNumber(this.searchValue);
         break;
       default:
         this.loadApplications();
@@ -115,12 +129,119 @@ viewApplication(app: Application): void {
     this.loadApplications();
   }
 
-  toggleTable(){
-    this.showTable = !this.showTable; 
+  toggleTable() {
+    this.showTable = !this.showTable;
   }
 
-  createNewLoan(): void {
-    console.log('Create new loan');
-    // Add router navigation when ready
+// home.ts
+createNewLoan() {
+  // Build a minimal payload that matches your JPA mapping
+  this.selectedApp = {
+    // omit id entirely (DB will generate it)
+    loanNumber: null,               // Integer
+    propertyAddress: '',            // String
+    loanAmount: 0,                 // String (no “$”)
+    loanType: '',                   // String
+    purpose: '',                    // String
+    submittedDate: new Date()
+      .toISOString()
+      .split('T')[0],               // 'YYYY-MM-DD'
+    status: 'Submitted',            // String
+    enable: true,                   // boolean
+    borrower: {                      // Borrower entity only needs these
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: ''
+    }
+  } as any; // cast to satisfy TS
+
+  this.isEditing = true;
+}
+
+  saveApplication() {
+  if (this.selectedApp) {
+    if (this.selectedApp.id && this.selectedApp.id !== 0) {
+      // Existing: Update
+      console.log('Updating application:', this.selectedApp);
+
+      this.applicationService.updateLoan(this.selectedApp).subscribe({
+        next: (updatedApp) => {
+          console.log('Update response:', updatedApp);
+          this.isEditing = false;
+          this.selectedApp = null;
+          this.loadApplications();
+        },
+        error: (err) => {
+          this.error = 'Failed to update loan';
+          console.error('Failed to update loan:', err);
+        }
+      });
+    } else {
+      // New: Create
+      console.log('Creating new application:', this.selectedApp);
+
+      this.applicationService.newLoan(this.selectedApp).subscribe({
+        next: (createdApp) => {
+          console.log('Create response:', createdApp);
+          // Important: Update the selectedApp with the new ID from the server
+          if (createdApp && createdApp.id) {
+            this.selectedApp = createdApp;
+          }
+          this.isEditing = false;
+          this.selectedApp = null;
+          this.loadApplications();
+        },
+        error: (err) => {
+          this.error = 'Failed to create loan';
+          console.error('Failed to create loan:', err);
+        }
+      });
+    }
   }
+}
+// File: src/app/components/home/home.ts
+
+deleteApplication() {
+  if (this.selectedApp && this.selectedApp.id && this.selectedApp.id !== 0) {
+     console.log('Attempting to delete application with ID:', this.selectedApp.id);
+
+    if (confirm('Are you sure you want to delete this loan application?')) {
+      this.loading = true;
+      this.error = '';
+
+      this.applicationService.deleteLoan(this.selectedApp.id).subscribe({
+        next: () => {
+          console.log('✅ Application deleted successfully');
+          this.isEditing = false;
+          this.selectedApp = null;
+          this.loadApplications();
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Failed to delete application';
+          console.error('❌ Failed to delete application:', err);
+          this.loading = false;
+
+          if (err.status === 404) {
+            this.error = 'Application not found - it may have already been deleted';
+            // Still refresh the list since it's not there
+            this.loadApplications();
+            this.selectedApp = null;
+            this.isEditing = false;
+            this.loadApplications();
+          } else {
+            this.error = 'Failed to delete applciation';
+          }
+          this.loading = false
+        }
+      });
+    }
+  }
+}
+
+cancelEdit() {
+  this.isEditing = false;
+  this.selectedApp = null;
+}
 }
