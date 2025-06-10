@@ -105,7 +105,7 @@ LoanTracker is a full-stack Spring Boot application designed to manage the lifec
       - forEach is an easier loop option
 
  ## Notes
-*    Project is modular, separated by controller, service, repo, and entity layers.
+*   Project is modular, separated by controller, service, repo, and entity layers.
 *   REST routes are designed to be frontend-consumable with clean JSON responses.
 *   Optional fields are wrapped in Optional<> when a nullable response is expected.
 *   Logging and debugging are enabled in Spring Boot startup logs.
@@ -125,6 +125,7 @@ spring.datasource.password=loantracker
 ``
 
 API at `http://localhost:8083/api`
+deployed at `http://52.9.238.19:8080/LoanTracker/#/`
 
 [MSFG](https://msfg.us)
 

@@ -1,15 +1,9 @@
 <!-- File: src/app/components/home/home.html -->
 <div class="container-fluid mt-4">
   <!-- Toggle enabled/disabled link -->
-  <p class="mb-2">
-    <a
-      href="#"
-      (click)="toggleEnabledFilter(); $event.preventDefault()"
-      class="small ms-3 link-secondary"
-    >
+    <button (click)="toggleEnabledFilter()" class="btn btn-link glow-btn">
       {{ showEnabledOnly ? 'Show disabled' : 'Show active' }}
-    </a>
-  </p>
+   </button>
   <br /><br />
 
   <!-- Search Form -->
@@ -204,9 +198,9 @@
           } @else {
             <p><strong>ID:</strong> {{ selectedApp.id }}</p>
             <p><strong>Loan #:</strong> {{ selectedApp.loanNumber }}</p>
-            <p><strong>Borrower:</strong> {{ selectedApp.borrower?.firstName }} {{ selectedApp.borrower?.lastName }}</p>
-            <p><strong>Email:</strong> {{ selectedApp.borrower?.email }}</p>
-            <p><strong>Phone:</strong> {{ selectedApp.borrower?.phone }}</p>
+            <p><strong>Borrower:</strong> {{ selectedApp.borrower.firstName }} {{ selectedApp.borrower.lastName }}</p>
+            <p><strong>Email:</strong> {{ selectedApp.borrower.email }}</p>
+            <p><strong>Phone:</strong> {{ selectedApp.borrower.phone }}</p>
             <p><strong>Property Address:</strong> {{ selectedApp.propertyAddress }}</p>
             <p><strong>Loan Type:</strong> {{ selectedApp.loanType }}</p>
             <p><strong>Loan Purpose:</strong> {{ selectedApp.purpose }}</p>
@@ -216,7 +210,7 @@
             <div class="d-flex gap-2 mt-3">
               <button class="btn btn-primary glow-btn" (click)="isEditing = true">Edit</button>
               @if (selectedApp.id && selectedApp.id !== 0) {
-                <button class="btn btn-danger glow-btn" (click)="deleteApplication()">Delete</button>
+                <button class="btn btn-danger glow-btn delete" (click)="deleteApplication()">Delete</button>
               }
             </div>
           }

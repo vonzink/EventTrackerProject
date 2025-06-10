@@ -279,7 +279,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 SET SQL_MODE = '';
 DROP USER IF EXISTS loantracker@localhost;
 SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-CREATE USER 'loantracker'@'localhost' IDENTIFIED BY 'loantracker';
+CREATE USER 'loantracker'@'localhost' IDENTIFIED BY 'root';
 
 GRANT SELECT, INSERT, TRIGGER, UPDATE, DELETE ON TABLE * TO 'loantracker'@'localhost';
 
@@ -307,10 +307,28 @@ COMMIT;
 START TRANSACTION;
 USE `loantrackerdb`;
 INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (1, 'Diane', 'Suelter', 'ds@gmail.com', '3033003030', '2025-01-01');
-INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (2, 'a', 'a', 'aa@gmail.com', '3033333000', '2025-01-01');
-INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (3, 'b', 'b', 'bb@gmail.com', '3033033030', '2025-01-01');
-INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (4, 'c', 'c', 'cc@gmail.com', '3330003030', '2025-01-01');
-INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (5, 'd', 'd', 'dd@gmail.com', '3033333030', '2025-01-01');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (2, 'tomas', 'Payne', 'aa@gmail.com', '3033333000', '2025-01-01');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (3, 'Amazon', 'Prime', 'bb@gmail.com', '3033033030', '2025-01-01');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (4, 'Anderson', 'Cooper', 'cc@gmail.com', '3330003030', '2025-01-01');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (5, 'Elon', 'Musk', 'dd@gmail.com', '3033333030', '2025-01-01');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (6, 'Matt', 'Murdock', 'mm@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (7, 'Austin', 'Powers', 'ap@gmail.com', '3039998078', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (8, 'Chad', 'Warner', 'chad@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (9, 'Carl', 'Weathers', 'cw@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (10, 'Marshal', 'Mathers', 'mm@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (11, 'Ben', 'Aflac', 'bf@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (12, 'Steven', 'Speilsberg', 'sb@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (13, 'john', 'adams', 'jm@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (14, 'Jamal', 'Murray', 'jm@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (15, 'Evan', 'Levy', 'ev@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (16, 'Brook', 'Zink', 'BZ@GMAIL.COM', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (17, 'Deanna', 'Hewey', 'dh@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (18, 'David', 'Charles', 'dc@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (19, 'Jeremy', 'Evans', 'je@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (20, 'Jeff', 'Brown', 'jb@gmail.com', '3039008080', '2025-01-02');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (21, 'David ', 'Bailey', 'db@gmail.com', '3039008080', '2024-01-01');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (22, 'Magnum', 'PI', 'pi@gmail.com', '3039008080', '2024-01-01');
+INSERT INTO `borrower` (`id`, `first_name`, `last_name`, `email`, `phone`, `created_at`) VALUES (23, 'Robert', 'Hoff', 'rh@gmail.com', '3039008080', '2024-01-01');
 
 COMMIT;
 
@@ -324,7 +342,25 @@ INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `
 INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (2, 2, '123 main st', 250000, 'CONV', 'Refi', '2025-05-05', 'Underwriting', 2, 1201, 1);
 INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (3, 3, '321 Broadway', 350000, 'VA', 'Purchase', '2025-05-05', 'closing', 3, 1351, 1);
 INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (4, 4, '555 wolf street', 780000, 'Jumbo', 'Purchase', '2025-01-01', 'funding', 4, 6514, 1);
-INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (5, 5, 'na', 800000, 'CONV', 'Purchase', '2025-01-01', 'Declined', 5, 9876, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (5, 5, '7126 Joan St,', 800000, 'CONV', 'Purchase', '2025-01-01', 'Declined', 5, 9876, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (6, 5, '2933 Central Park Blvd', 615000, 'conv', 'Purchase', '2025-05-05', 'approved', 6, 2345, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (7, 4, '2426 Ames St', 534000, 'VA', 'Purchase', '2025-05-05', 'approved', 7, 5432, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (8, 3, '2933 Central Park Blvd', 335544, 'CONV', 'Purchase', '2025-05-05', 'Declined', 8, 2435, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (9, 2, '7126 Joan St', 658020, 'VA', 'Refi', '2025-05-05', 'approved', 9, 5432, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (10, 1, '1120 N Clarkson St #6', 123700, 'CONV', 'Refi', '2025-05-05', 'Declined', 10, 5687, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (11, 1, '2426 Ames St', 345455, 'CONV', 'Purchase', '2025-05-05', 'approved', 11, 8877, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (12, 1, '633 S Galena St', 657733, 'VA', 'Purchase', '2025-05-05', 'funding', 12, 6856, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (13, 2, '7474 E Arkansas Ave Unit 13-02', 664000, 'FHA', 'Refi', '2025-03-05', 'approved', 13, 5837, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (14, 3, '5131 Andes St', 667700, 'VA', 'Refi', '2025-03-05', 'funding', 14, 9981, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (15, 4, '8100 W Quincy Ave Unit A8', 758600, 'VA', 'Purchase', '2025-03-05', 'approved', 15, 81245, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (16, 4, '1241 S Akron Way', 133000, 'CONV', 'Refi', '2025-03-05', 'ctc', 16, 9047, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (17, 5, '6901 E 12th Ave', 225560, 'FHA', 'Purchase', '2025-03-05', 'approved', 17, 3874, 1);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (18, 5, '6223 W Flora Pl', 143500, 'VA', 'Purchase', '2025-03-05', 'approved', 18, 7765, 0);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (19, 1, '201 S Lafayette St', 668800, 'CONV', 'Refi', '2025-03-05', 'ctc', 19, 335645, 0);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (20, 1, '1885 S Quebec Way Unit A28', 76000, 'Jumbo', 'Refi', '2025-03-05', 'approved', 20, 7654, 0);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (21, 2, '2518 16th St', 76000, 'VA', 'Purchase', '2025-03-05', 'underwriting', 21, 77756, 0);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (22, 3, '7040 E Girard Ave #406', 100000, 'FHA', 'Purchase', '2025-03-05', 'underwriting', 22, 67555, 0);
+INSERT INTO `application` (`id`, `user_id`, `property_address`, `loan_amount`, `loan_type`, `purpose`, `submitted_date`, `status`, `borrower_id`, `loan_number`, `enable`) VALUES (23, 2, '1340 W 68th Ave', 120000, 'VA', 'Purchase', '2025-03-05', 'approved', 23, 5675, 0);
 
 COMMIT;
 

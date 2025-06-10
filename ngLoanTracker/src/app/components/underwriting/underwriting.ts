@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit }      from '@angular/core';
+import { ActivatedRoute }         from '@angular/router';
+@Component({ standalone: true, selector: 'app-underwriting', template: `Underwriting for {{ id }}` })
 
-@Component({
-  selector: 'app-underwriting',
-  imports: [],
-  templateUrl: './underwriting.html',
-  styleUrl: './underwriting.css'
-})
-export class Underwriting {
 
+export class UnderwritingComponent implements OnInit {
+  id!: number;
+  constructor(private route: ActivatedRoute) {}
+  ngOnInit() {
+    this.id = +this.route.snapshot.params['id'];
+    // call your service to fetch underwriting for this.id…
+  }
 }

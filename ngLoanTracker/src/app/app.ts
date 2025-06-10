@@ -1,13 +1,23 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Home } from "./components/home/home";
+import { Component }               from '@angular/core';
+import { bootstrapApplication }    from '@angular/platform-browser';
+import { provideRouter }           from '@angular/router';
+import { RouterOutlet }            from '@angular/router';
+import { appRoutes }               from './app.routes';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Home],
+  standalone: true,
+  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
-  protected title = 'ngLoanTracker';
+  title = 'ngLoanTracker';
 }
+
+// Move this outside the class!
+bootstrapApplication(App, {
+  providers: [
+    provideRouter(appRoutes)
+  ]
+}).catch(err => console.error(err));

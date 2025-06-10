@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api")
+@CrossOrigin({ "*", "http://localhost/" })
 public class ApplicationController {
 
 	@Autowired
@@ -88,6 +89,11 @@ public class ApplicationController {
 	@GetMapping("applications/search/status")
 	public List<Application> findByStatus(@RequestParam("status") String status) {
 		return appService.findByStatus(status);
+	}
+	@GetMapping("applications/search/loanNumber")
+		public List<Application> findByLoanNumber(@RequestParam("loanNumber") Integer loanNumber) {
+		    return appService.findByLoanNumber(loanNumber);
+		
 	}
 	@GetMapping("applications/search/dates")
 	public List<Application> findByDateRange(
